@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 import pickle 
 import datetime
+import copy
 
 import vista_utils as tsv # Get it at: https://github.com/arokem/vista_utils
 from nitime.fmri.io import time_series_from_file as load_nii 
@@ -57,13 +58,14 @@ if __name__ == "__main__":
     
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
+    normalizeByMean=1
     sessionName=['donepazil', 'placebo']
     session=1 # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['fix_nii']
     # save filename
     date=str(datetime.date.today())
-    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAallROIsOrderFix_matr'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
+    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAallROIsOrderFix_normalize'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
     
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -123,7 +125,24 @@ if __name__ == "__main__":
 
         corr_all[subject] = np.zeros((numRuns,len(rois),len(rois))) * np.nan
         coh_all[subject] = np.zeros((numRuns,len(rois),len(rois))) * np.nan
+
         
+        # Average over all the runs, get an ROI by TS array (TS==averages)
+        allROISorig=copy.deepcopy(allROIS)
+        AvgRuns=np.mean(allROIS, axis=1)
+
+        # Subtract out average
+        if normalizeByMean:
+            for numTS in range(numRuns):
+                allROIS[:,numTS,:]=allROIS[:,numTS,:]-AvgRuns
+                plt.figure()
+                plt.plot(allROIS[0,numTS,:], color='r', label='newTS')
+                plt.plot(allROISorig[0,numTS,:], color='b', label='oldTS')
+                plt.plot(AvgRuns[0,:], color='g', label='avgTS')
+                plt.legend(loc='Best'); 
+                plt.show()
+
+            
         # Get roi correlations and coherence
         for runNum in range(allROIS.shape[1]):
             #need to load timeseries by run

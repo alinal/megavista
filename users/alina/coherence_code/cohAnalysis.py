@@ -265,8 +265,8 @@ if __name__ == "__main__":
     
 	base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
 	fmri_path = base_path + 'fmri/'
-	fileName='CG&CHT&DCAallROIsOrderdonepazil1runs_2012-02-02.pck'
-        condition='Donepazil_fixation'
+	fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
+        condition='NormalizedFixationRun'
 	loadFile=fmri_path+'Results/' +fileName
 
 	figSize=[10., 10.]
@@ -283,6 +283,7 @@ if __name__ == "__main__":
 	for sub in cohAll:
 		print sub
 		numRuns=cohAll[sub].shape[0]
+                
 		# Average over runs (the first dimension)
 		coherAvg=np.mean(cohAll[sub][:], 0)
                 coherSTD=np.std(cohAll[sub][:], 0)
@@ -290,7 +291,7 @@ if __name__ == "__main__":
                 corrSTD=np.std(corrAll[sub][:], 0)
 
 		# Plot graph of coherence and correlation values
-                '''
+              
 		fig1 = makePlot(coherAvg, roiNames, size=[10., 10.], color_anchor=0,
 				title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub, max_val=1, min_val=0)
                 fig2=makePlot(coherSTD, roiNames, size=[10., 10.], color_anchor=0,
@@ -300,8 +301,8 @@ if __name__ == "__main__":
                 fig4=makePlot(corrSTD, roiNames, size=[10., 10.], color_anchor=0,
 			      title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
 		plt.show()
-                '''
-                #Fisher transform the data
+               
+                #Fisher transform the data (maybe fisher transform earlier)
                 coherAvg_t = np.arctanh(coherAvg)
                 corrAvg_t=np.arctanh(corrAvg)
 
@@ -320,8 +321,8 @@ if __name__ == "__main__":
                 #Plot the data for 4 groups
                 #Define the streams
                 earlyVent=[1, 2, 3]
-                earlyDors=[8, 9, 10]
-                parietal=[11, 12, 13, 14, 15]
+                earlyDors=[7, 8, 9]
+                parietal=[10, 11, 12, 13, 14]
                 objSel=[4,5,6]
                 
                 print 'Early Ventral rois: '+ str(roiNames[earlyVent])
