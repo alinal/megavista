@@ -127,7 +127,7 @@ if __name__ == "__main__":
         coh_all[subject] = np.zeros((numRuns,len(rois),len(rois))) * np.nan
 
         
-        # Average over all the runs, get an ROI by TS array (TS==averages)
+        # Average over all the runs, get an ROI by TS array (TS==averages), TS= 30 TRs long (TR=2 S)
         allROISorig=copy.deepcopy(allROIS)
         AvgRuns=np.mean(allROIS, axis=1)
 
@@ -135,12 +135,13 @@ if __name__ == "__main__":
         if normalizeByMean:
             for numTS in range(numRuns):
                 allROIS[:,numTS,:]=allROIS[:,numTS,:]-AvgRuns
-                plt.figure()
-                plt.plot(allROIS[0,numTS,:], color='r', label='newTS')
-                plt.plot(allROISorig[0,numTS,:], color='b', label='oldTS')
-                plt.plot(AvgRuns[0,:], color='g', label='avgTS')
-                plt.legend(loc='Best'); 
-                plt.show()
+                # plt.figure()
+                #Examples time series subtraction, one ROI
+                #plt.plot(allROIS[0,numTS,:], color='r', label='newTS')
+                #plt.plot(allROISorig[0,numTS,:], color='b', label='oldTS')
+                #plt.plot(AvgRuns[0,:], color='g', label='avgTS')
+                #plt.legend(loc='best'); plt.title(roi_names[0]);
+                #plt.show()
 
             
         # Get roi correlations and coherence
@@ -153,6 +154,7 @@ if __name__ == "__main__":
             C=CorrelationAnalyzer(fixTS)
             fig01 = drawmatrix_channels(C.corrcoef, roi_names, size=[10., 10.], color_anchor=0,  title='Correlation Results Run %i' % runNum)
             plt.show()
+            
             # Save correlation
             corr_all[subject][runNum]=C.corrcoef
 
@@ -171,7 +173,7 @@ if __name__ == "__main__":
             fig03 = drawmatrix_channels(coher, roi_names, size=[10., 10.], color_anchor=0, title='Coherence Results Run %i' % runNum)
             # Save coherence (coher is the average of the coherence over the specified frequency)
             coh_all[subject][runNum]=coher
-
+                   
     file=open(saveFile, 'w') # write mode
     # First file loaded is coherence
     pickle.dump(coh_all, file)
