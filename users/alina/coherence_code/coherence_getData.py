@@ -2,12 +2,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
-import pickle 
+import pickle
 import datetime
 import copy
 
 import vista_utils as tsv # Get it at: https://github.com/arokem/vista_utils
-from nitime.fmri.io import time_series_from_file as load_nii 
+from nitime.fmri.io import time_series_from_file as load_nii
 import nitime.timeseries as ts
 import nitime.viz as viz
 
@@ -52,21 +52,21 @@ def reshapeTS(t_fix):
     # This returns rois x runs x TS with runs collapsed by segTime
     allROIS=np.reshape(t_fixArrayTP, [shapeTS[0], shapeTS[1]*numRuns, segTime])
     return allROIS
-  
+
 
 if __name__ == "__main__":
-    
+
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     normalizeByMean=1
     sessionName=['donepazil', 'placebo']
-    session=1 # 0= donepazil, 1=placebo
+    session=0 # 0= donepazil, 1=placebo
     TR = 2
-    allRuns=['fix_nii']
+    allRuns=['left_nii']
     # save filename
     date=str(datetime.date.today())
-    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAallROIsOrderFix_normalize'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
-    
+    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAallROIsOrderLeft_normalize'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
+
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
     f_ub = 0.15
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     #So, say your sampleing rate is 1024 samples/sec and NFFT is 256. Then delta_freq = 4 Hz.
     NFFT=16 # 32 for 60 TRs, 1/64= freq limit lower, .25 hertz is upper limit (1/2 of sampling rate) Nyquist freq
     n_overlap=8
-    
+
     # The upsample factor between the Inplane and the Gray:
     # Inplane Voxels: .867 x .867 x 3.3, Functional voxels: 3 x 3 x 3.3
     up_samp = [3.4595,3.4595,1.0000]
@@ -84,18 +84,18 @@ if __name__ == "__main__":
     # set up dictionaries to store results
     corr_all=dict()
     coh_all = dict()
-    
+
     for subject in subjects:
         # len(subjects[subject])= number of session per subject
-        # len(subjects[subject][0][1])= number of different types of runs 
+        # len(subjects[subject][0][1])= number of different types of runs
         # len(subjects[subject][1][1]['fix_nii'])= number of nifti files for that session
 
         # Close any opened plots
         plt.close('all')
-        
+
         # Get session
         sess = subjects[subject][session]
-        
+
         # Get ROIs
         roi_names=np.array(rois)
         ROI_files=[]
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         # up-sampling:
         ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp)
                            for f in ROI_files]
-        
+
          # Initialize lists for each behavioral condition:
         t_fix = []
         t_left = []
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         corr_all[subject] = np.zeros((numRuns,len(rois),len(rois))) * np.nan
         coh_all[subject] = np.zeros((numRuns,len(rois),len(rois))) * np.nan
 
-        
+
         # Average over all the runs, get an ROI by TS array (TS==averages), TS= 30 TRs long (TR=2 S)
         allROISorig=copy.deepcopy(allROIS)
         AvgRuns=np.mean(allROIS, axis=1)
@@ -143,37 +143,37 @@ if __name__ == "__main__":
                 #plt.legend(loc='best'); plt.title(roi_names[0]);
                 #plt.show()
 
-            
+
         # Get roi correlations and coherence
         for runNum in range(allROIS.shape[1]):
             #need to load timeseries by run
             fixTS=ts.TimeSeries(allROIS[:,runNum,:], sampling_interval=TR)
             fixTS.metadata['roi'] = roi_names
-           
+
             # Get plot and correlations
             C=CorrelationAnalyzer(fixTS)
             fig01 = drawmatrix_channels(C.corrcoef, roi_names, size=[10., 10.], color_anchor=0,  title='Correlation Results Run %i' % runNum)
             plt.show()
-            
+
             # Save correlation
             corr_all[subject][runNum]=C.corrcoef
 
             # Get coherence
             Coh = CoherenceAnalyzer(fixTS)
-   
+
             Coh.method['NFFT'] = NFFT
             Coh.method['n_overlap']=n_overlap
 
             # Get the index for the frequencies inside the ub and lb
             freq_idx = np.where((Coh.frequencies > f_lb) * (Coh.frequencies < f_ub))[0]
-            
+
             # Extract coherence
             # Coher[0]= correlations for first ROI in list with others
             coher = np.mean(Coh.coherence[:, :, freq_idx], -1)  # Averaging on the last dimension
             fig03 = drawmatrix_channels(coher, roi_names, size=[10., 10.], color_anchor=0, title='Coherence Results Run %i' % runNum)
             # Save coherence (coher is the average of the coherence over the specified frequency)
             coh_all[subject][runNum]=coher
-                   
+
     file=open(saveFile, 'w') # write mode
     # First file loaded is coherence
     pickle.dump(coh_all, file)
@@ -185,4 +185,4 @@ if __name__ == "__main__":
     pickle.dump(subjects, file)
     file.close()
     print 'Saving subject coherence and correlation dictionaries.'
-            
+
