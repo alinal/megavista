@@ -4,7 +4,7 @@
  mcf= already motion corrected
 
  Subjects are watching a movie: fix= task at the center, right= attention right, contrast decrement
- 
+
 
  For each subject, the first session is the donepezil session
  Each run has 6 movie clips x 60 seconds each
@@ -15,10 +15,11 @@
 #DCA: no MT
 # CHT: no rIPS5
 # 'R_V1_0.25', 'R_V1_0.25',
+# WC: no 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
+# Get invalid index error with WC
 
-
-rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 
-      'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25' ]
+rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
+      'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25' ]
 
 
 subjects = {
@@ -43,7 +44,7 @@ subjects = {
                             left_nii =  ['epi02_mcf.nii.gz',
                                          'epi05_mcf.nii.gz',
                                          'epi08_mcf.nii.gz'])]],
-      
+
      'CHT':[['CHT042111', dict(loc_nii =['epi01_mcf.nii.gz',
                                        'epi11_mcf.nii.gz'],
                              right_nii = ['epi04_mcf.nii.gz',
@@ -67,7 +68,7 @@ subjects = {
                              fix_nii = ['epi02_mcf.nii.gz',
                                         'epi05_mcf.nii.gz',
                                         'epi08_mcf.nii.gz'])]],
-                                        
+
            'DCA':[['DCA042511',dict(loc_nii =['epi01_mcf.nii.gz',
                                        'epi11_mcf.nii.gz'],
                              fix_nii = ['epi04_mcf.nii.gz',
@@ -187,7 +188,7 @@ subjects = {
                                                 'epi08_mcf.nii.gz'])]],
 
 
-    
+
     # 'JM':[['JM021811', dict(loc_nii =['epi01_mcf.nii.gz',
     #                                   'epi11_mcf.nii.gz'],
     #                         left_nii = ['epi04_mcf.nii.gz',

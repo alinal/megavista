@@ -211,5 +211,5 @@ for sub in cohAll:
     fig.show()
 
 # Make a connection graph
-#1/0
-#fig04 = drawgraph_channels(cohAll[sub], roiNames, color_anchor=1)
+
+fig04 = drawgraph_channels(cohAll[sub], roiNames, color_anchor=1)

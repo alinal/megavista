@@ -60,12 +60,12 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
     normalizeByMean=1
     sessionName=['donepazil', 'placebo']
-    session=0 # 0= donepazil, 1=placebo
+    session=1 # 0= donepazil, 1=placebo
     TR = 2
-    allRuns=['left_nii']
+    allRuns=['fix_nii']
     # save filename
     date=str(datetime.date.today())
-    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAallROIsOrderLeft_normalize'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
+    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCAvizROIsOrderfix_normalize'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
