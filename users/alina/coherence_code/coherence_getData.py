@@ -109,8 +109,6 @@ if __name__ == "__main__":
 
          # Initialize lists for each behavioral condition:
         t_fix = []
-        t_left = []
-        t_right = []
         nifti_path = fmri_path +sess[0] + '/%s_nifti/' % sess[0]
 
         # Plot the mean of the TS over SD (SNR) for each ROI
