@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_LHplacebo1runs_2013-07-31.pck'
+    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_bothplacebo1runs_2013-08-01.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -100,31 +100,34 @@ for sub in cohAll:
     print sub
     numRuns=cohAll[sub].shape[0]
 
-    # Average over runs (the first dimension)
-    coherAvg=np.mean(cohAll[sub][:], 0)
-    coherSTD=np.std(cohAll[sub][:], 0)
-    corrAvg=np.mean(corrAll[sub][:],0)
-    corrSTD=np.std(corrAll[sub][:], 0)
-
     #Fisher transform the data (maybe fisher transform earlier)
-    coherAvg_t = np.arctanh(coherAvg)
-    corrAvg_t=np.arctanh(corrAvg)
+    coherAll_t = np.arctanh(cohAll[sub][:])
+    corrAll_t=np.arctanh(cohAll[sub][:])
+
+    #replace all inf in fisher transform with nan
+    coherAll_flat=coherAll_t.flatten()
+    corrAll_flat=corrAll_t.flatten()
+    ind = np.where(coherAll_flat == np.Infinity)
+    coherAll_flat[ind] = np.nan
+    ind = np.where( corrAll_flat == np.Infinity)
+    corrAll_flat[ind] = np.nan
+
+    # Reshape back into matrix of runs x rois x rois
+    coherAll_t=coherAll_flat.reshape(numRuns, roiNames.size, roiNames.size)
+    corrAll_t=corrAll_flat.reshape(numRuns, roiNames.size, roiNames.size)
+
+    # Average over runs (the first dimension)
+    coherAvg_t=np.mean(coherAll_t, 0)
+    coherSTD=np.std(coherAll_t, 0)
+    corrAvg_t=np.mean(corrAll_t,0)
+    corrSTD=np.std(corrAll_t, 0)
 
     # Plot graph of coherence and correlation values
     fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0, title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
-    fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0,
-        title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
-    fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0,
-        title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
-    fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0,
-        title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
+    fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
+    fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0, title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
+    fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
     plt.show()
-
-    #replace all inf with nan
-    ind = np.where(coherAvg_t == np.Infinity)
-    coherAvg_t[ind] = np.nan
-    ind = np.where(corrAvg_t == np.Infinity)
-    corrAvg_t[ind] = np.nan
 
     #Plot data for 3 streams (btw for all)
     titleName=condition+" coherence "
@@ -134,30 +137,36 @@ for sub in cohAll:
 
     #Plot the data for 4 groups
     #Define the streams
-    earlyVent=[1, 2, 3]
-    earlyDors=[6, 7, 8]
-    parietal=[9, 10, 11]
-    objSel=[4,5]
+    earlyVent=[1, 2, 3, 14, 15, 16]
+    earlyDors=[7, 8, 9, 19, 20, 21]
+    parietal=[10, 11, 12, 22, 23, 24]
+    objSel=[4, 5, 6, 17, 18]
 
     print 'Early Ventral rois: '+ str(roiNames[earlyVent])
     print 'Early Dorsal rois: ' + str(roiNames[earlyDors])
     print 'Parietal rois: '+ str(roiNames[parietal])
     print 'Object rois: '+ str(roiNames[objSel])
 
-
-    networkAvg= corrAvg_t # Correlation (corrAvg_t) or coherence (coherAvg_t)
+    networkAvg= corrAll_t# Correlation (corrAvg_t) or coherence (coherAvg_t)
     analType='Correlation'
 
     # Get network averages
+    1/0
     earlyVentCoher=getNetworkWithin(networkAvg, earlyVent)
     earlyDorsCoher=getNetworkWithin(networkAvg, earlyDors)
     parietalCoher=getNetworkWithin(networkAvg, parietal)
     objSelCoher=getNetworkWithin(networkAvg, objSel)
 
+    #Average over last two dimensions....
+
+
+    #Correlation means and STDs across all ROI correlation/coherence values.
     allMeansWithin= (stats.nanmean(earlyVentCoher.flat), stats.nanmean(earlyDorsCoher.flat), stats.nanmean(parietalCoher.flat),
        stats.nanmean(objSelCoher.flat))
     allSTDWithin=(stats.nanstd(earlyVentCoher.flat), stats.nanstd(earlyDorsCoher.flat), stats.nanstd(parietalCoher.flat),
        stats.nanstd(objSelCoher.flat))
+
+
     # Get network btw
     #Early Visual
     EVbtwED=networkAvg[earlyVent,:][:,earlyDors]; EVbtwEDavg=np.mean(EVbtwED); EVbtwEDstd=np.std(EVbtwED)

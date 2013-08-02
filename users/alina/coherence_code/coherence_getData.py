@@ -65,7 +65,7 @@ if __name__ == "__main__":
     allRuns=['fix_nii']
     # save filename
     date=str(datetime.date.today())
-    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCA&SSvizROIsOrderfix_normalize_RH'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
+    saveFile=base_path+ 'fmri/Results/' + 'CG&CHT&DCA&SSvizROIsOrderfix_normalize_both'+sessionName[session] +str(len(allRuns))+'runs_'+ date + '.pck'
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency

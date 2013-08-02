@@ -43,12 +43,19 @@ def getNetworkWithin(in_dat, roiIndx):
     m=in_dat.copy()
     #Null the upper triangle, so that you don't get the redundant and
     #the diagonal values:
-    idx_null = triu_indices(m.shape[0])
-    m[idx_null] = np.nan
+    newMat=np.zeros((m.shape[0], len(roiIndx), len(roiIndx)))
 
-    #Extract network values
-    withinVals = m[roiIndx,:][:,roiIndx]
-    return withinVals
+    #Iterate through each run
+    for runNum in range(m.shape[0]):
+        m_onerun=m[runNum][:][:]
+        idx_null = triu_indices(m_onerun.shape[0])
+        m_onerun[idx_null] = np.nan
+
+        #Extract network values
+        withinVals = m_onerun[roiIndx,:][:,roiIndx]
+        newMat[runNum][:][:]=withinVals
+
+    return newMat
 
 
 def getNetworkBtw(dataBtw, net1, net2):
