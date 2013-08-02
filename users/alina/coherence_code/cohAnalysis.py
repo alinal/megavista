@@ -78,7 +78,8 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
+    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_LHplacebo1runs_2013-07-31.pck'
+    #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
     condition='NormalizedFixationRun'
@@ -134,9 +135,9 @@ for sub in cohAll:
     #Plot the data for 4 groups
     #Define the streams
     earlyVent=[1, 2, 3]
-    earlyDors=[7, 8, 9]
-    parietal=[10, 11, 12, 13, 14]
-    objSel=[4,5,6]
+    earlyDors=[6, 7, 8]
+    parietal=[9, 10, 11]
+    objSel=[4,5]
 
     print 'Early Ventral rois: '+ str(roiNames[earlyVent])
     print 'Early Dorsal rois: ' + str(roiNames[earlyDors])
