@@ -113,10 +113,12 @@ if __name__ == "__main__":
 
         # Plot the mean of the TS over SD (SNR) for each ROI
         # len(t_fix)= number of ROIs
+        # Add filtering
         for runName in allRuns:
             for this_fix in sess[1][runName]:
                 t_fix.append(load_nii(nifti_path+this_fix, ROI_coords,TR,
-                                    normalize='percent', average=True, verbose=True))
+                                    normalize='percent', filter=dict(lb=f_lb, ub=f_ub, method='boxcar', filt_order=10),
+                                    average=True, verbose=True))
         # reshape ROI matrix
         allROIS=reshapeTS(t_fix)
         numRuns=allROIS.shape[1]

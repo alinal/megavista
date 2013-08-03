@@ -1,5 +1,6 @@
 from nitime.utils import triu_indices
 import numpy as np
+import scipy.stats as stats
 
 
 
@@ -58,8 +59,10 @@ def getNetworkWithin(in_dat, roiIndx):
     return newMat
 
 
-def getNetworkBtw(dataBtw, net1, net2):
+def getNetworkBtw(dataBtw, net1, net2, numRuns):
     data_b=dataBtw.copy()
-    allBtw=data_b[net1,:][:,net2]
-    allBtw=stats.nanmean(allBtw)
-    return allBtw
+
+    allBtw=data_b.T[net1,:][:,net2];
+    allBtw_mean=stats.nanmean(allBtw.reshape([len(net1)*len(net2), numRuns]), axis=0)
+
+    return allBtw_mean

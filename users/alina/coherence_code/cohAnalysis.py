@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_bothplacebo1runs_2013-08-01.pck'
+    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_bothplacebo1runs_2013-08-02.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -102,7 +102,7 @@ for sub in cohAll:
 
     #Fisher transform the data (maybe fisher transform earlier)
     coherAll_t = np.arctanh(cohAll[sub][:])
-    corrAll_t=np.arctanh(cohAll[sub][:])
+    corrAll_t=np.arctanh(corrAll[sub][:])
 
     #replace all inf in fisher transform with nan
     coherAll_flat=coherAll_t.flatten()
@@ -147,46 +147,46 @@ for sub in cohAll:
     print 'Parietal rois: '+ str(roiNames[parietal])
     print 'Object rois: '+ str(roiNames[objSel])
 
-    networkAvg= corrAll_t# Correlation (corrAvg_t) or coherence (coherAvg_t)
-    analType='Correlation'
+    networkAvg= coherAll_t# Correlation (corrAll_t) or coherence (coherAll_t)
+    analType='Coherence'
 
     # Get network averages
-    1/0
     earlyVentCoher=getNetworkWithin(networkAvg, earlyVent)
     earlyDorsCoher=getNetworkWithin(networkAvg, earlyDors)
     parietalCoher=getNetworkWithin(networkAvg, parietal)
     objSelCoher=getNetworkWithin(networkAvg, objSel)
 
     #Average over last two dimensions....
+    earlyVentCoher_mean=stats.nanmean(earlyVentCoher.reshape([numRuns,len(earlyVent)*len(earlyVent)]), axis=1)
+    earlyDorsCoher_mean=stats.nanmean(earlyDorsCoher.reshape([numRuns,len(earlyDors)*len(earlyDors)]), axis=1)
+    parietalCoher_mean=stats.nanmean(parietalCoher.reshape([numRuns,len(parietal)*len(parietal)]), axis=1)
+    objSelCoher_mean=stats.nanmean(objSelCoher.reshape([numRuns,len(objSel)*len(objSel)]), axis=1)
 
-
-    #Correlation means and STDs across all ROI correlation/coherence values.
-    allMeansWithin= (stats.nanmean(earlyVentCoher.flat), stats.nanmean(earlyDorsCoher.flat), stats.nanmean(parietalCoher.flat),
-       stats.nanmean(objSelCoher.flat))
-    allSTDWithin=(stats.nanstd(earlyVentCoher.flat), stats.nanstd(earlyDorsCoher.flat), stats.nanstd(parietalCoher.flat),
-       stats.nanstd(objSelCoher.flat))
+    #Correlation means and STDs across all RUNs correlation/coherence values.
+    allMeansWithin= (stats.nanmean(earlyVentCoher_mean), stats.nanmean(earlyDorsCoher_mean), stats.nanmean(parietalCoher_mean), stats.nanmean(objSelCoher_mean))
+    allSTDWithin=(stats.nanstd(earlyVentCoher_mean), stats.nanstd(earlyDorsCoher_mean), stats.nanstd(parietalCoher_mean), stats.nanstd(objSelCoher_mean))
 
 
     # Get network btw
     #Early Visual
-    EVbtwED=networkAvg[earlyVent,:][:,earlyDors]; EVbtwEDavg=np.mean(EVbtwED); EVbtwEDstd=np.std(EVbtwED)
-    EVbtwPar=networkAvg[earlyVent,:][:, parietal]; EVbtwParavg=np.mean(EVbtwPar); EVbtwParstd=np.std(EVbtwPar)
-    EVbtwObjSel=networkAvg[earlyVent,:][:, objSel]; EVbtwObjSelavg=np.mean(EVbtwObjSel); EVbtwObjSelstd=np.std(EVbtwObjSel)
+    EVbtwED_mean=getNetworkBtw(networkAvg, earlyVent, earlyDors, numRuns); EVbtwEDavg=np.mean(EVbtwED_mean); EVbtwEDstd=np.std(EVbtwED_mean)
+    EVbtwPar_mean=getNetworkBtw(networkAvg, earlyVent, parietal, numRuns); EVbtwParavg=np.mean(EVbtwPar_mean); EVbtwParstd=np.std(EVbtwPar_mean)
+    EVbtwObjSel_mean=getNetworkBtw(networkAvg, earlyVent, objSel, numRuns); EVbtwObjSelavg=np.mean(EVbtwObjSel_mean); EVbtwObjSelstd=np.std(EVbtwObjSel_mean)
 
     # Early Dorsal
-    EDbtwEV=networkAvg[earlyDors,:][:,earlyVent]; EDbtwEVavg=np.mean(EDbtwEV); EDbtwEVstd=np.std(EDbtwEV)
-    EDbtwPar=networkAvg[earlyDors,:][:, parietal]; EDbtwParavg=np.mean(EDbtwPar); EDbtwParstd=np.std(EDbtwPar)
-    EDbtwObjSel=networkAvg[earlyDors,:][:, objSel]; EDbtwObjSelavg=np.mean(EDbtwObjSel); EDbtwObjSelstd=np.std(EDbtwObjSel)
+    EDbtwEV_mean=getNetworkBtw(networkAvg, earlyDors, earlyVent, numRuns); EDbtwEVavg=np.mean(EDbtwEV_mean); EDbtwEVstd=np.std(EDbtwEV_mean)
+    EDbtwPar_mean=getNetworkBtw(networkAvg, earlyDors, parietal, numRuns); EDbtwParavg=np.mean(EDbtwPar_mean); EDbtwParstd=np.std(EDbtwPar_mean)
+    EDbtwObjSel_mean=getNetworkBtw(networkAvg, earlyDors, objSel, numRuns); EDbtwObjSelavg=np.mean(EDbtwObjSel_mean); EDbtwObjSelstd=np.std(EDbtwObjSel_mean)
 
     # Parietal
-    ParbtwEV=networkAvg[parietal,:][:,earlyVent]; ParbtwEVavg=np.mean(ParbtwEV); ParbtwEVstd=np.std(ParbtwEV)
-    ParbtwED=networkAvg[parietal,:][:, earlyDors]; ParbtwEDavg=np.mean(ParbtwED); ParbtwEDstd=np.std(ParbtwED)
-    ParbtwObjSel=networkAvg[parietal,:][:, objSel]; ParbtwObjSelavg=np.mean(ParbtwObjSel); ParbtwObjSelstd=np.std(ParbtwObjSel)
+    ParbtwEV_mean=getNetworkBtw(networkAvg, parietal, earlyVent, numRuns); ParbtwEVavg=np.mean(ParbtwEV_mean); ParbtwEVstd=np.std(ParbtwEV_mean)
+    ParbtwED_mean=getNetworkBtw(networkAvg, parietal, earlyDors, numRuns); ParbtwEDavg=np.mean(ParbtwED_mean); ParbtwEDstd=np.std(ParbtwED_mean)
+    ParbtwObjSel_mean=getNetworkBtw(networkAvg, parietal, objSel, numRuns); ParbtwObjSelavg=np.mean(ParbtwObjSel_mean); ParbtwObjSelstd=np.std(ParbtwObjSel_mean)
 
     # Object Selective
-    ObjSelbtwEV=networkAvg[objSel,:][:,earlyVent]; ObjSelbtwEVavg=np.mean(ObjSelbtwEV); ObjSelbtwEVstd=np.std(ObjSelbtwEV)
-    ObjSelbtwED=networkAvg[objSel,:][:, earlyDors]; ObjSelbtwEDavg=np.mean(ObjSelbtwED); ObjSelbtwEDstd=np.std(ObjSelbtwED)
-    ObjSelbtwPar=networkAvg[objSel,:][:, parietal]; ObjSelbtwParavg=np.mean(ObjSelbtwPar); ObjSelbtwParstd=np.std(ObjSelbtwPar)
+    ObjSelbtwEV_mean=getNetworkBtw(networkAvg, objSel, earlyVent, numRuns); ObjSelbtwEVavg=np.mean(ObjSelbtwEV_mean); ObjSelbtwEVstd=np.std(ObjSelbtwEV_mean)
+    ObjSelbtwED_mean=getNetworkBtw(networkAvg, objSel, earlyDors, numRuns); ObjSelbtwEDavg=np.mean(ObjSelbtwED_mean); ObjSelbtwEDstd=np.std(ObjSelbtwED_mean)
+    ObjSelbtwPar_mean=getNetworkBtw(networkAvg, objSel, parietal, numRuns); ObjSelbtwParavg=np.mean(ObjSelbtwPar_mean); ObjSelbtwParstd=np.std(ObjSelbtwPar_mean)
 
 
     allMeans=([allMeansWithin[0], EVbtwEDavg, EVbtwParavg, EVbtwObjSelavg], [EDbtwEVavg, allMeansWithin[1], EDbtwParavg, EDbtwObjSelavg],
@@ -222,4 +222,4 @@ for sub in cohAll:
 
 # Make a connection graph
 
-fig04 = drawgraph_channels(cohAll[sub], roiNames, color_anchor=1)
+#fig04 = drawgraph_channels(cohAll[sub], roiNames) #color_anchor=1
