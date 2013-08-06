@@ -11,7 +11,7 @@ from nitime.fmri.io import time_series_from_file as load_nii
 import nitime.timeseries as ts
 import nitime.viz as viz
 
-from nitime.analysis import CorrelationAnalyzer, CoherenceAnalyzer
+from nitime.analysis import CorrelationAnalyzer, CoherenceAnalyzer, SpectralAnalyzer
 #Import utility functions:
 from nitime.utils import percent_change
 from nitime.viz import drawmatrix_channels, drawgraph_channels
@@ -85,13 +85,13 @@ if __name__ == "__main__":
     corr_all=dict()
     coh_all = dict()
 
+    # Close any opened plots
+    #plt.close('all')
+
     for subject in subjects:
         # len(subjects[subject])= number of session per subject
         # len(subjects[subject][0][1])= number of different types of runs
         # len(subjects[subject][1][1]['fix_nii'])= number of nifti files for that session
-
-        # Close any opened plots
-        plt.close('all')
 
         # Get session
         sess = subjects[subject][session]
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         for runName in allRuns:
             for this_fix in sess[1][runName]:
                 t_fix.append(load_nii(nifti_path+this_fix, ROI_coords,TR,
-                                    normalize='percent', filter=dict(lb=f_lb, ub=f_ub, method='boxcar', filt_order=10),
+                                    normalize='percent', #filter=dict(lb=f_lb, ub=f_ub, method='boxcar', filt_order=10),
                                     average=True, verbose=True))
         # reshape ROI matrix
         allROIS=reshapeTS(t_fix)
@@ -173,6 +173,19 @@ if __name__ == "__main__":
             fig03 = drawmatrix_channels(coher, roi_names, size=[10., 10.], color_anchor=0, title='Coherence Results Run %i' % runNum)
             # Save coherence (coher is the average of the coherence over the specified frequency)
             coh_all[subject][runNum]=coher
+
+            #For debugging, lets look at some of the spectra
+            S_original = SpectralAnalyzer(fixTS)
+            plt.figure()    
+            plt.plot(S_original.psd[0],S_original.psd[1][0],label='Welch PSD')
+            plt.plot(S_original.spectrum_fourier[0],S_original.spectrum_fourier[1][0],label='FFT')
+            plt.plot(S_original.periodogram[0],S_original.periodogram[1][0],label='Periodogram')
+            plt.plot(S_original.spectrum_multi_taper[0],S_original.spectrum_multi_taper[1][0],label='Multi-taper')
+            plt.xlabel('Frequency (Hz)')
+            plt.ylabel('Power')
+            plt.legend()
+            plt.show()
+            1/0
 
     file=open(saveFile, 'w') # write mode
     # First file loaded is coherence
