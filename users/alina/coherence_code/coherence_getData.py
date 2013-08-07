@@ -114,11 +114,11 @@ if __name__ == "__main__":
         # Plot the mean of the TS over SD (SNR) for each ROI
         # len(t_fix)= number of ROIs
         # Add filtering
+        filterType='boxcar'
         for runName in allRuns:
             for this_fix in sess[1][runName]:
-                t_fix.append(load_nii(nifti_path+this_fix, ROI_coords,TR,
-                                    normalize='percent', #filter=dict(lb=f_lb, ub=f_ub, method='boxcar', filt_order=10),
-                                    average=True, verbose=True))
+                t_fix.append(load_nii(nifti_path+this_fix, ROI_coords,TR, normalize='percent',
+                    filter=dict(lb=f_lb, ub=f_ub, method=filterType, filt_order=10), average=True, verbose=True))
         # reshape ROI matrix
         allROIS=reshapeTS(t_fix)
         numRuns=allROIS.shape[1]
@@ -152,8 +152,8 @@ if __name__ == "__main__":
 
             # Get plot and correlations
             C=CorrelationAnalyzer(fixTS)
-            fig01 = drawmatrix_channels(C.corrcoef, roi_names, size=[10., 10.], color_anchor=0,  title='Correlation Results Run %i' % runNum)
-            plt.show()
+            #fig01 = drawmatrix_channels(C.corrcoef, roi_names, size=[10., 10.], color_anchor=0,  title='Correlation Results Run %i' % runNum)
+            #plt.show()
 
             # Save correlation
             corr_all[subject][runNum]=C.corrcoef
@@ -170,23 +170,26 @@ if __name__ == "__main__":
             # Extract coherence
             # Coher[0]= correlations for first ROI in list with others
             coher = np.mean(Coh.coherence[:, :, freq_idx], -1)  # Averaging on the last dimension
-            fig03 = drawmatrix_channels(coher, roi_names, size=[10., 10.], color_anchor=0, title='Coherence Results Run %i' % runNum)
+            #fig03 = drawmatrix_channels(coher, roi_names, size=[10., 10.], color_anchor=0, title='Coherence Results Run %i' % runNum)
             # Save coherence (coher is the average of the coherence over the specified frequency)
             coh_all[subject][runNum]=coher
 
             #For debugging, lets look at some of the spectra
             S_original = SpectralAnalyzer(fixTS)
-            plt.figure()    
+            plt.figure()
             plt.plot(S_original.psd[0],S_original.psd[1][0],label='Welch PSD')
             plt.plot(S_original.spectrum_fourier[0],S_original.spectrum_fourier[1][0],label='FFT')
             plt.plot(S_original.periodogram[0],S_original.periodogram[1][0],label='Periodogram')
             plt.plot(S_original.spectrum_multi_taper[0],S_original.spectrum_multi_taper[1][0],label='Multi-taper')
             plt.xlabel('Frequency (Hz)')
             plt.ylabel('Power')
+            plt.ylim([-5, 5])
             plt.legend()
+            plt.title('Run number '+str(runNum+1)+', '+filterType)
             plt.show()
-            1/0
 
+
+    1/0
     file=open(saveFile, 'w') # write mode
     # First file loaded is coherence
     pickle.dump(coh_all, file)
