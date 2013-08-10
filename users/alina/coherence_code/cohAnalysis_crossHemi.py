@@ -71,6 +71,17 @@ def autolabel(rects):
 
         plt.show()
 
+def getNetworkMeansBtw(networkAvg, netw1, other_netw, numRuns):
+    allMeans=np.zeros(len(other_netw))
+    allSTDs=np.zeros(len(other_netw))
+    i=0
+    for net in other_netw:
+            netw1btwnetw_mean=getNetworkBtw(networkAvg, netw1, net, numRuns)
+            allMeans[i]=np.mean(netw1btwnetw_mean)
+            allSTDs[i]=np.std(netw1btwnetw_mean)
+            i=i+1
+
+    return allMeans, allSTDs
 
 if __name__ == "__main__":
     # Close any opened plots
@@ -151,8 +162,8 @@ for sub in cohAll:
     print 'Parietal rois: '+ str(roiNames[r_parietal]) +str(roiNames[l_parietal])
     print 'Object rois: '+ str(roiNames[r_objSel])+ str(roiNames[l_objSel])
 
-    networkAvg= coherAll_t# Correlation (corrAll_t) or coherence (coherAll_t)
-    analType='Coherence'
+    networkAvg= corrAll_t# Correlation (corrAll_t) or coherence (coherAll_t)
+    analType='Correlation'
 
     # Get network averages
     r_earlyVentCoher=getNetworkWithin(networkAvg, r_earlyVent)
@@ -183,38 +194,37 @@ for sub in cohAll:
 ######
     # Get network btw
     #Early Visual
-    EVbtwED_mean=getNetworkBtw(networkAvg, earlyVent, earlyDors, numRuns); EVbtwEDavg=np.mean(EVbtwED_mean); EVbtwEDstd=np.std(EVbtwED_mean)
-    EVbtwPar_mean=getNetworkBtw(networkAvg, earlyVent, parietal, numRuns); EVbtwParavg=np.mean(EVbtwPar_mean); EVbtwParstd=np.std(EVbtwPar_mean)
-    EVbtwObjSel_mean=getNetworkBtw(networkAvg, earlyVent, objSel, numRuns); EVbtwObjSelavg=np.mean(EVbtwObjSel_mean); EVbtwObjSelstd=np.std(EVbtwObjSel_mean)
+    rEVbtwAllavg, rEVbtwAllstd=getNetworkMeansBtw(networkAvg, r_earlyVent, [r_earlyDors, r_parietal, r_objSel, l_earlyVent, l_earlyDors, l_parietal, l_objSel], numRuns)
+    lEVbtwAllavg, lEVbtwAllstd=getNetworkMeansBtw(networkAvg, l_earlyVent, [r_earlyVent, r_earlyDors,  r_parietal, r_objSel, l_earlyDors, l_parietal, l_objSel], numRuns)
 
     # Early Dorsal
-    EDbtwEV_mean=getNetworkBtw(networkAvg, earlyDors, earlyVent, numRuns); EDbtwEVavg=np.mean(EDbtwEV_mean); EDbtwEVstd=np.std(EDbtwEV_mean)
-    EDbtwPar_mean=getNetworkBtw(networkAvg, earlyDors, parietal, numRuns); EDbtwParavg=np.mean(EDbtwPar_mean); EDbtwParstd=np.std(EDbtwPar_mean)
-    EDbtwObjSel_mean=getNetworkBtw(networkAvg, earlyDors, objSel, numRuns); EDbtwObjSelavg=np.mean(EDbtwObjSel_mean); EDbtwObjSelstd=np.std(EDbtwObjSel_mean)
+    rEDbtwAllavg, rEDbtwAllstd=getNetworkMeansBtw(networkAvg, r_earlyDors, [r_earlyVent, r_parietal, r_objSel, l_earlyVent, l_earlyDors, l_parietal, l_objSel], numRuns)
+    lEDbtwAllavg, lEDbtwAllstd=getNetworkMeansBtw(networkAvg, l_earlyDors, [r_earlyVent, r_earlyDors, r_parietal, r_objSel, l_earlyVent, l_parietal, l_objSel], numRuns)
 
     # Parietal
-    ParbtwEV_mean=getNetworkBtw(networkAvg, parietal, earlyVent, numRuns); ParbtwEVavg=np.mean(ParbtwEV_mean); ParbtwEVstd=np.std(ParbtwEV_mean)
-    ParbtwED_mean=getNetworkBtw(networkAvg, parietal, earlyDors, numRuns); ParbtwEDavg=np.mean(ParbtwED_mean); ParbtwEDstd=np.std(ParbtwED_mean)
-    ParbtwObjSel_mean=getNetworkBtw(networkAvg, parietal, objSel, numRuns); ParbtwObjSelavg=np.mean(ParbtwObjSel_mean); ParbtwObjSelstd=np.std(ParbtwObjSel_mean)
+    rParbtwAllavg, rParbtwAllstd=getNetworkMeansBtw(networkAvg, r_parietal, [r_earlyVent, r_earlyDors, r_objSel, l_earlyVent, l_earlyDors, l_objSel, l_parietal], numRuns)
+    lParbtwAllavg, lParbtwAllstd=getNetworkMeansBtw(networkAvg, l_parietal, [r_earlyVent, r_earlyDors, r_parietal, r_objSel, l_earlyVent, l_earlyDors, l_objSel ], numRuns)
 
     # Object Selective
-    ObjSelbtwEV_mean=getNetworkBtw(networkAvg, objSel, earlyVent, numRuns); ObjSelbtwEVavg=np.mean(ObjSelbtwEV_mean); ObjSelbtwEVstd=np.std(ObjSelbtwEV_mean)
-    ObjSelbtwED_mean=getNetworkBtw(networkAvg, objSel, earlyDors, numRuns); ObjSelbtwEDavg=np.mean(ObjSelbtwED_mean); ObjSelbtwEDstd=np.std(ObjSelbtwED_mean)
-    ObjSelbtwPar_mean=getNetworkBtw(networkAvg, objSel, parietal, numRuns); ObjSelbtwParavg=np.mean(ObjSelbtwPar_mean); ObjSelbtwParstd=np.std(ObjSelbtwPar_mean)
+    rObjSelbtwAllavg, rObjSelbtwAllstd=getNetworkMeansBtw(networkAvg, r_objSel, [r_earlyVent, r_earlyDors, r_parietal, l_earlyVent, l_earlyDors, l_parietal, l_objSel], numRuns)
+    lObjSelbtwAllavg, lObjSelbtwAllstd=getNetworkMeansBtw(networkAvg, l_objSel, [r_earlyVent, r_earlyDors, r_parietal, r_objSel, l_earlyVent, l_earlyDors, l_parietal], numRuns)
 
 
-    allMeans=([allMeansWithin[0], EVbtwEDavg, EVbtwParavg, EVbtwObjSelavg], [EDbtwEVavg, allMeansWithin[1], EDbtwParavg, EDbtwObjSelavg],
-        [ParbtwEVavg, ParbtwEDavg, allMeansWithin[2], ParbtwObjSelavg], [ObjSelbtwEVavg, ObjSelbtwEDavg, ObjSelbtwParavg, allMeansWithin[3]])
-    allSTD=([allSTDWithin[0], EVbtwEDstd, EVbtwParstd, EVbtwObjSelstd], [EDbtwEVstd, allSTDWithin[1], EDbtwParstd, EDbtwObjSelstd], [ParbtwEVstd, ParbtwEDstd, allSTDWithin[2], ParbtwObjSelstd],
-        [ObjSelbtwEVstd, ObjSelbtwEDstd, ObjSelbtwParstd, allSTDWithin[3]])
+    allMeans=(np.insert(rEVbtwAllavg, 0, allMeansWithin[0]), np.insert(rEDbtwAllavg, 1, allMeansWithin[1]), np.insert(rParbtwAllavg, 2, allMeansWithin[2]),
+        np.insert(rObjSelbtwAllavg, 3, allMeansWithin[3]), np.insert(lEVbtwAllavg, 4, allMeansWithin[4]), np.insert(lEDbtwAllavg, 5, allMeansWithin[5]),
+        np.insert(lParbtwAllavg, 6, allMeansWithin[6]), np.insert(lObjSelbtwAllavg, 7, allMeansWithin[7]))
+    allSTD=(np.insert(rEVbtwAllstd, 0, allSTDWithin[0]), np.insert(rEDbtwAllstd, 1, allSTDWithin[1]), np.insert(rParbtwAllstd, 2, allSTDWithin[2]),
+        np.insert(rObjSelbtwAllstd, 3, allSTDWithin[3]), np.insert(lEVbtwAllstd, 4, allSTDWithin[4]), np.insert(lEDbtwAllstd, 5, allSTDWithin[5]),
+        np.insert(lParbtwAllstd, 6, allSTDWithin[6]), np.insert(lObjSelbtwAllstd, 7, allSTDWithin[7]))
+
 
     titleName=condition+ analType
     # Make bar graph
-    title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'Early Ventral', 'Early Dorsal', 'Parietal', 'Object Selective')
+    title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'rEarly Ventral', 'rEarly Dorsal', 'rParietal', 'rObject Selective', 'lEarly Ventral', 'lEarly Dorsal', 'lParietal', 'lObject Selective')
 
     N=len(allMeansWithin)
     ind = np.arange(N)  # the x locations for the groups
-    width = 0.15       # the width of the bars
+    width = 0.1       # the width of the bars
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -222,6 +232,12 @@ for sub in cohAll:
     rects2 = ax.bar(ind+width*1, allMeans[1], width, color='y', yerr=allSTD[1])
     rects3 = ax.bar(ind+width*2, allMeans[2], width, color='g', yerr=allSTD[2])
     rects4 = ax.bar(ind+width*3, allMeans[3], width, color='b', yerr=allSTD[3])
+    rects5 = ax.bar(ind+width*4, allMeans[4], width, color='r', yerr=allSTD[4])
+    rects6 = ax.bar(ind+width*5, allMeans[5], width, color='y', yerr=allSTD[5])
+    rects7 = ax.bar(ind+width*6, allMeans[6], width, color='g', yerr=allSTD[6])
+    rects8 = ax.bar(ind+width*7, allMeans[7], width, color='b', yerr=allSTD[7])
+
+
 
     # add some labels
     ax.set_ylabel('Means')
@@ -229,7 +245,8 @@ for sub in cohAll:
     ax.set_xticks(ind+width*2)
     ax.set_xticklabels( labels )
     ax.set_ylim( 0, 2.0 )
-    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0]), ('W/ Early Ventral', 'W/ Early Dorsal', 'W/ Parietal', 'W/ Object Sel.'))
+    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0], rects5[0], rects6[0], rects7[0], rects8[0]),
+        ('W/ rEarly Ventral', 'W/ rEarly Dorsal', 'W/ rParietal', 'W/ rObject Sel.', 'W/ lEarly Ventral', 'W/ lEarly Dorsal', 'W/ lParietal', 'W/ lObject Sel.'))
 
     # Show final figure
     fig.show()
