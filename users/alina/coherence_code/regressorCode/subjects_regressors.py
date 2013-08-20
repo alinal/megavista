@@ -43,8 +43,8 @@ subjects = {
                                          'epi09_mcf.par'],
                             left_nii =  ['epi02_mcf.par',
                                          'epi05_mcf.par',
-                                         'epi08_mcf.par'])]],
-
+                                         'epi08_mcf.par'])]]}
+'''
     'WC':[['WC031911', dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
                              left_nii = ['epi02_mcf.par',
@@ -239,4 +239,4 @@ subjects = {
     #                             'epi08_mcf.nii.gz'
     #                             ])]],
 
-
+'''

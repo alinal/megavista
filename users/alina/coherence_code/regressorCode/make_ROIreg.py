@@ -30,9 +30,8 @@ if __name__ == "__main__":
     sessionName=['donepazil', 'placebo']
     session=[0,1] # 0= donepazil, 1=placebo
     TR = 2
-    allRuns=['fix_nii', 'right_nii', 'left_nii']
-
-    date=str(datetime.date.today())
+    #allRuns=['fix_nii', 'right_nii', 'left_nii']
+    allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -87,7 +86,6 @@ if __name__ == "__main__":
                         ts_roi=t_all[roiNum].data
 
                         # Linearly detrend within each voxel
-                        1/0
                         ts_roidt=signal.detrend(ts_roi, axis=1)
 
                         # Average across all voxels within ROI
@@ -95,9 +93,33 @@ if __name__ == "__main__":
 
                         # Band pass filter the data
                         ts_roidtAvgConv=ts.TimeSeries(ts_roidtAvg, sampling_interval=TR)
-                        ts_roidtAvgConv=FilterAnalyzer(ts_roidtAvgConv, lb=f_lb, ub=f_ub)
-                        ts_AvgBox=ts_roidtAvgConv.filtered_boxcar
+                        ts_roidtAvgAnal=FilterAnalyzer(ts_roidtAvgConv, lb=f_lb, ub=f_ub)
+                        ts_AvgBox=ts_roidtAvgAnal.filtered_boxcar
+
+                        # Plot TS results
+                        1/0
+                        origTS=np.mean(ts_roi, 0)
+                        plt.figure(); plt.plot(origTS); plt.plot(ts_roidtAvg); plt.plot(ts_AvgBox.data) ;
+                        plt.title('Blue= Original TS; Green= Linearly Filtered TS; Red= bandpass filtered')
+
+                        # Plot frequencies
+                        S_boxcar=SpectralAnalyzer(ts_AvgBox)
+                        S_original=SpectralAnalyzer(ts.TimeSeries(np.mean(t_all[roiNum], 1), sampling_interval=TR))
+                        S_dt=SpectralAnalyzer(ts_roidtAvgConv)
+
+                        fig03 = plt.figure()
+                        ax03 = fig03.add_subplot(1, 1, 1)
+
+                        ax03.plot(S_original.spectrum_multi_taper[0], S_original.spectrum_multi_taper[1], label='Original')
+
+                        ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
+
+                        ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
+
+                        ax03.legend()
 
                         # Save nuisance time series
+                        out_file=save_path+rois[roiNum]+'_'+this_fix[:-8]+'.1D'
+                        np.savetxt(out_file, ts_AvgBox.data)
 
 
