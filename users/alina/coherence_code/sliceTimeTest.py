@@ -59,9 +59,9 @@ if __name__ == "__main__":
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     sessionName=['donepazil', 'placebo']
-    session=0 # 0= donepazil, 1=placebo
+    session=1 # 0= donepazil, 1=placebo
     TR = 2
-    allRuns=['loc_nii']
+    allRuns=['fix_nii']
 
     # The upsample factor between the Inplane and the Gray:
     # Inplane Voxels: .867 x .867 x 3.3, Functional voxels: 3 x 3 x 3.3
@@ -88,11 +88,11 @@ if __name__ == "__main__":
 
              # Initialize lists for each behavioral condition:
             t_fix = []
-            nifti_path ='/Users/alina/Desktop/test/'
+            nifti_path =fmri_path+sess[0]+'/%s_nifti/' % sess[0]
 
 
-            niftiOrig=load_nii(nifti_path+'epi02_mcf.nii.gz', ROI_coords, TR, average='True')
-            niftiSTc=load_nii(nifti_path+'epi02_mcf_stc.nii.gz', ROI_coords, TR, average='True')
+            niftiOrig=load_nii(nifti_path+'epi04_mcf.nii.gz', ROI_coords, TR, average='True')
+            niftiSTc=load_nii(nifti_path+'epi04_mcf_stc.nii.gz', ROI_coords, TR, average='True')
 
             roiNum=0;
             roi1Orig=niftiOrig[roiNum]

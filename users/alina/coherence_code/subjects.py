@@ -21,36 +21,38 @@
 # CG: no l_pFus
 
 #rois=['L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_PPA_p4',
-#      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25']
+#      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25' ]
 
 rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
       'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
       'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_PPA_p4',
-      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25' ]
+      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25']
 
+nuisReg=['mcf1', 'mcf2', 'mcf3', 'mcf4','mcf5', 'mcf6', 'lVent_4mm',
+        'rVent_4mm', 'rWM', 'lWM']
 
 subjects = {
-    'CG':[['CG011611', dict(loc_nii =['epi01_mcf.nii.gz',
-                                      'epi10_mcf.nii.gz'],
-                            fix_nii = ['epi04_mcf.nii.gz',
-                                       'epi07_mcf.nii.gz'],
-                            right_nii =  ['epi03_mcf.nii.gz',
-                                          'epi06_mcf.nii.gz',
-                                          'epi09_mcf.nii.gz'],
-                            left_nii = ['epi02_mcf.nii.gz',
-                                        'epi05_mcf.nii.gz',
-                                        'epi08_mcf.nii.gz'])],
-          ['CG020611', dict(loc_nii = ['epi01_mcf.nii.gz',
-                                       'epi11_mcf.nii.gz'],
-                            fix_nii = ['epi04_mcf.nii.gz',
-                                       'epi07_mcf.nii.gz',
-                                       'epi10_mcf.nii.gz'],
-                            right_nii = ['epi03_mcf.nii.gz',
-                                         'epi06_mcf.nii.gz',
-                                         'epi09_mcf.nii.gz'],
-                            left_nii =  ['epi02_mcf.nii.gz',
-                                         'epi05_mcf.nii.gz',
-                                         'epi08_mcf.nii.gz'])]]}
+    'CG':[['CG011611', dict(loc_nii =['epi01_mcf_stc.nii.gz',
+                                      'epi10_mcf_stc.nii.gz'],
+                            fix_nii = ['epi04_mcf_stc.nii.gz',
+                                       'epi07_mcf_stc.nii.gz'],
+                            right_nii =  ['epi03_mcf_stc.nii.gz',
+                                          'epi06_mcf_stc.nii.gz',
+                                          'epi09_mcf_stc.nii.gz'],
+                            left_nii = ['epi02_mcf_stc.nii.gz',
+                                        'epi05_mcf_stc.nii.gz',
+                                        'epi08_mcf_stc.nii.gz'])],
+          ['CG020611', dict(loc_nii = ['epi01_mcf_stc.nii.gz',
+                                       'epi11_mcf_stc.nii.gz'],
+                            fix_nii = ['epi04_mcf_stc.nii.gz',
+                                       'epi07_mcf_stc.nii.gz',
+                                       'epi10_mcf_stc.nii.gz'],
+                            right_nii = ['epi03_mcf_stc.nii.gz',
+                                         'epi06_mcf_stc.nii.gz',
+                                         'epi09_mcf_stc.nii.gz'],
+                            left_nii =  ['epi02_mcf_stc.nii.gz',
+                                         'epi05_mcf_stc.nii.gz',
+                                         'epi08_mcf_stc.nii.gz'])]]}
 
 
      # 'CHT':[['CHT042111', dict(loc_nii =['epi01_mcf.nii.gz',
