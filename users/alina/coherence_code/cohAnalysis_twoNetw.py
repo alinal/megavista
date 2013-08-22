@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CG&CHT&DCA&SSvizROIsOrderfix_normalize_bothplacebo1runs_2013-08-02.pck'
+    fileName='CGplacebo_fix_nii_corrVals.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -141,21 +141,21 @@ for sub in cohAll:
     plt.show()
 
     #Plot data for 3 streams (btw for all)
-    titleName=condition+" coherence "
+    #titleName=condition+" coherence "
     #get3NetworkAvg(coherAvg_t, titleName, roiNames, numRuns)
-    titleName=condition+" correlation "
+    #titleName=condition+" correlation "
     #get3NetworkAvg(corrAvg_t, titleName, roiNames, numRuns)
 
     #Plot the data for 4 groups
     #Define the streams
-    ventral=[1, 3, 4, 5, 6, 7, 14, 16, 17, 18, 19]
-    dorsal=[9, 10, 11, 12, 21, 22, 23, 24]
+    ventral=[1, 3, 6, 7, 8, 9, 10, 23, 25, 28, 29,  30, 31]
+    dorsal=[14, 15, 16, 17, 18, 19, 20, 21, 35, 36, 37, 38, 39, 40, 41, 42]
 
     print 'Ventral rois: '+ str(roiNames[ventral])
     print 'Dorsal rois: ' + str(roiNames[dorsal])
 
-
-    networkAvg= corrAll_t# Correlation (corrAll_t) or coherence (coherAll_t)
+    # Do Network analysis
+    networkAvg= corrAll_t # Correlation (corrAll_t) or coherence (coherAll_t)
     analType='Correlation'
 
     # Get network averages
@@ -165,7 +165,6 @@ for sub in cohAll:
     #Average over last two dimensions....
     ventCoher_mean=stats.nanmean(ventCoher.reshape([numRuns,len(ventral)*len(ventral)]), axis=1)
     dorsCoher_mean=stats.nanmean(dorsCoher.reshape([numRuns,len(dorsal)*len(dorsal)]), axis=1)
-
 
     #Correlation means and STDs across all RUNs correlation/coherence values.
     allMeansWithin= (stats.nanmean(ventCoher_mean), stats.nanmean(dorsCoher_mean))
@@ -178,28 +177,19 @@ for sub in cohAll:
 
     # Early Dorsal
     EDbtwAllavg, EDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsal, [ventral], numRuns)
-
-
-
     allMeans=(np.insert(EVbtwAllavg, 0, allMeansWithin[0]), np.insert(EDbtwAllavg, 1, allMeansWithin[1]))
     allSTD=(np.insert(EVbtwAllstd, 0, allSTDWithin[0]), np.insert(EDbtwAllstd, 1, allSTDWithin[1]))
 
-
-    titleName=condition+ analType
     # Make bar graph
+    titleName=condition+ analType
     title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'Ventral', 'Dorsal')
-
     N=len(allMeansWithin)
     ind = np.arange(N)  # the x locations for the groups
     width = 0.1       # the width of the bars
-
     fig = plt.figure()
     ax = fig.add_subplot(111)
     rects1 = ax.bar(ind, allMeans[0], width, color='r', yerr=allSTD[0])
     rects2 = ax.bar(ind+width*1, allMeans[1], width, color='b', yerr=allSTD[1])
-
-
-
 
     # add some labels
     ax.set_ylabel('Means')

@@ -81,7 +81,6 @@ if __name__ == "__main__":
                         # Get each time series (voxels x TRs)
                         ts_roi=t_all[roiNum].data
 
-                        1/0
                         # Linearly detrend within each voxel
                         ts_roidt=signal.detrend(ts_roi, axis=1)
                         # Average across all voxels within ROI for detrended data
@@ -114,7 +113,7 @@ if __name__ == "__main__":
                         ax03.legend()
 
                         # Save nuisance time series
-                        out_file=save_path+rois[roiNum]+'_'+this_fix[:-8]+'_stc.1D'
+                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc.1D'
                         np.savetxt(out_file, ts_AvgBox)
 
 

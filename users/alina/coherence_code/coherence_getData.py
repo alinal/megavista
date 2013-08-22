@@ -119,6 +119,7 @@ if __name__ == "__main__":
             for this_fix in sess[1][runName]:
                 t_fix.append(load_nii(nifti_path+this_fix, ROI_coords,TR, normalize='percent',
                     filter=dict(lb=f_lb, ub=f_ub, method=filterType, filt_order=10), average=True, verbose=True))
+        1/0
         # reshape ROI matrix
         allROIS=reshapeTS(t_fix)
         numRuns=allROIS.shape[1]

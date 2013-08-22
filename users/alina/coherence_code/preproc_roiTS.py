@@ -1,3 +1,11 @@
+# This code loads each ROI's time series and does the following:
+# 1. Linearly detrend using signal.detrend
+# 2. Band pass filter the data using boxcar filter in filter analyzer (default filter size)
+# 3. Least squares regression of nuisance variables (motion and ROI) using np.linalg.lstsq
+# 4. Takes the residuals from the regression
+# 5. Averages over all ROI voxels
+# 6. Saves out numRun x numROI x TR matrix of data
+
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as stats
@@ -17,6 +25,7 @@ from nitime.viz import drawmatrix_channels, drawgraph_channels
 from nitime.viz import drawmatrix_channels, drawgraph_channels, plot_xcorr
 from preproc_filter import bp_data
 from scipy import signal
+import scipy.linalg
 
 import subjects
 reload(subjects) # In case you make changes in there while you analyze
@@ -41,43 +50,26 @@ def display_vox(tseries,vox_idx,fig=None):
                            color='r')
     return fig
 
-def reshapeTS(t_fix):
-    # TR=2 seconds, 30 TRs in one movie
-    segTime=30
-    # Change to an array (numSess, numROIs, numTime points)
-    t_fixArray=np.array(t_fix)
-    t_fixArrayTP=np.transpose(t_fixArray, (1,0,2))
-    shapeTS=t_fixArrayTP.shape
-    numRuns=shapeTS[2]/segTime
-    # This returns rois x runs x TS with runs collapsed by segTime
-    allROIS=np.reshape(t_fixArrayTP, [shapeTS[0], shapeTS[1]*numRuns, segTime])
-    return allROIS
-
-def loadNuisance(files):
-
 
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
 
-    plotAll=1;
+    plotAll=0;
 
     sessionName=['donepazil', 'placebo']
     session=[0,1] # 0= donepazil, 1=placebo
     TR = 2
     #allRuns=['fix_nii', 'right_nii', 'left_nii']
     allRuns=['fix_nii']
+    # TR=2 seconds, 30 TRs in one movie
+    segTime=30
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
     f_ub = 0.15
     f_lb = 0.01
-
-    #It depends on your frequency bin resolution needs. delta_freq = sampling_rate/NFFT
-    #So, say your sampleing rate is 1024 samples/sec and NFFT is 256. Then delta_freq = 4 Hz.
-    NFFT=16 # 32 for 60 TRs, 1/64= freq limit lower, .25 hertz is upper limit (1/2 of sampling rate) Nyquist freq
-    n_overlap=8
 
     # The upsample factor between the Inplane and the Gray:
     # Inplane Voxels: .867 x .867 x 3.3, Functional voxels: 3 x 3 x 3.3
@@ -100,8 +92,7 @@ if __name__ == "__main__":
             ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp)
                            for f in ROI_files]
 
-            # Initialize lists for each behavioral condition:
-            t_fix = []
+
             nifti_path = fmri_path +sessName[0] + '/%s_nifti/' % sessName[0]
             reg_path=fmri_path+sessName[0]+'/regressors/'
 
@@ -110,12 +101,26 @@ if __name__ == "__main__":
 
             #Go through each run and save out ROIs as nifti file
             for runName in allRuns:
-                for this_fix in sessName[1][runName]:
+                # Initialize lists for each condition:
+                t_fix = []
+                saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts.pck' % len(roi_names)
+                for this_run in sessName[1][runName]:
+                    run_rois=[]
+                    allData=load_nii(nifti_path+this_run, ROI_coords, TR, normalize='percent', average=False, verbose=True)
+                    regMatrix=[]
+
+                    # Load the nuisance variables into a matrix
+                    for reg in nuisReg:
+                        regFile=reg_path+this_run[:5]+'_'+reg
+                        regMatrix.append(np.loadtxt(regFile))
+                    # Convert to array
+                    regArray=np.array(regMatrix).transpose()
+
+                    # Go through each ROI
                     for jj in range(len(ROI_coords)):
                         roiData=[]; ts_roidt=[]; ts_Box=[]; ts_AvgBox=[];
-                        1/0
-                        # Load time series for each ROI
-                        roiData=load_nii(nifti_path+this_fix, ROI_coords[jj], TR, normalize='percent', average=False, verbose=True)
+                        # Get time series for each ROI
+                        roiData=allData[jj]
 
                         # Linearly detrend within each voxel
                         ts_roidt=signal.detrend(roiData.data, axis=1)
@@ -126,7 +131,7 @@ if __name__ == "__main__":
                         # Average over all voxels
                         ts_AvgBox=np.mean(ts_Box.data, 0)
 
-                        if plotAll
+                        if plotAll:
                             # Plot time series
                             origTS=np.mean(roiData.data, 0)
                             plt.figure(); plt.plot(origTS);  plt.plot(ts_AvgBox) ;
@@ -145,15 +150,34 @@ if __name__ == "__main__":
 
                             ax03.legend()
 
-                        # Do regression
-                        regMatrix=[]
-                        for reg in nuisReg
-                            regMatrix.append(np.loadtxt(nifti_))
+                        # Regression steps
+                        tsArray=np.array(ts_Box.data)
+                        residMatrix=[]
+                        # Do multiple regression using least squares.
+                        for vox in range(tsArray.shape[0]):
+                            b_weight=[]
+                            b_weight=np.linalg.lstsq(regArray,tsArray[vox])[0]
+                            residMatrix.append(tsArray[vox]-np.dot(regArray,b_weight))
 
-                        # Load the nuisance variables into a matrix
+                        # Make residual array
+                        residArray=np.array(residMatrix)
 
-                        1/0
-                    t_fix.append(load_nii(nifti_path+this_fix, ROI_coords, TR, normalize='percent', average=False, verbose=True))
+                        # Get ROI average
+                        roiAvg=[]; roiAvg=np.mean(residArray, 0)
+                        run_rois.append(ts.TimeSeries(roiAvg, sampling_interval=TR))
+                    t_fix.append(run_rois)
 
-            #for roiNum in range(len(rois)):
-            # Get each time series (voxels x TRs)
+                # Save time series
+                file=open(saveFile, 'w') # write mode
+                # First file loaded is TS files
+                pickle.dump(t_fix, file)
+                # Second file loaded is ROI names
+                pickle.dump(roi_names, file)
+                # Subject and type
+                pickle.dump(subject+sessionName[sess], file)
+                # Third file is run names
+                pickle.dump(sessName[1][runName], file)
+                # Session and run
+                pickle.dump(sessName[0]+runName, file)
+                file.close()
+                print 'Saving subject TS dictionaries.'

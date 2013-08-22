@@ -23,13 +23,23 @@
 #rois=['L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_PPA_p4',
 #      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25' ]
 
-rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
-      'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
-      'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_PPA_p4',
-      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25']
+#rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
+#      'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
+#      'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_PPA_p4',
+#      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25']
 
-nuisReg=['mcf1', 'mcf2', 'mcf3', 'mcf4','mcf5', 'mcf6', 'lVent_4mm',
-        'rVent_4mm', 'rWM', 'lWM']
+
+rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'R_LO1_0.25', 'R_LO2_0.25',
+      'r_IOG_p3_0.25', 'r_LOf_p3_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'r_pSTS_p3_0.25',
+      'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
+      'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
+      'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25', 'L_LO1_0.25','L_LO2_0.25',
+      'l_IOG_p3_0.25','l_LOf_p3_0.25', 'l_mFus_p3', 'l_PPA_p4', 'l_pSTS_p3_0.25',
+      'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25', 'L_MT_al_.5_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25',
+      'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+
+nuisReg=['mcf1_bp.1D', 'mcf2_bp.1D', 'mcf3_bp.1D', 'mcf4_bp.1D','mcf5_bp.1D', 'mcf6_bp.1D', 'lVent_4mm_stc.1D',
+        'rVent_4mm_stc.1D', 'rWM_6mm_stc.1D', 'lWM_6mm_stc.1D']
 
 subjects = {
     'CG':[['CG011611', dict(loc_nii =['epi01_mcf_stc.nii.gz',
