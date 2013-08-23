@@ -147,24 +147,34 @@ for sub in cohAll:
     #get3NetworkAvg(corrAvg_t, titleName, roiNames, numRuns)
 
     #Plot the data for 4 groups
+    
     #Define the streams
-    ventral=[1, 3, 6, 7, 8, 9, 10, 23, 25, 28, 29,  30, 31]
-    dorsal=[14, 15, 16, 17, 18, 19, 20, 21, 35, 36, 37, 38, 39, 40, 41, 42]
+    ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25',
+       'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'L_V2V_0.25','L_V2D_0.25', 'L_V4_0.25',
+       'l_IOG_p3_0.25', 'l_LOf_p3_0.25', 'l_mFus_p3', 'l_PPA_p4']
+    
+    dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
+       'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
+       'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
+       'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+    
+    ventralIndx=np.where(np.in1d(roiNames, ventral))[0]
+    dorsalIndx=np.where(np.in1d(roiNames, dorsal))[0]
 
-    print 'Ventral rois: '+ str(roiNames[ventral])
-    print 'Dorsal rois: ' + str(roiNames[dorsal])
+    print 'Ventral rois: '+ str(roiNames[ventralIndx])
+    print 'Dorsal rois: ' + str(roiNames[dorsalIndx])
 
     # Do Network analysis
     networkAvg= corrAll_t # Correlation (corrAll_t) or coherence (coherAll_t)
     analType='Correlation'
 
     # Get network averages
-    ventCoher=getNetworkWithin(networkAvg, ventral)
-    dorsCoher=getNetworkWithin(networkAvg, dorsal)
+    ventCoher=getNetworkWithin(networkAvg, ventralIndx)
+    dorsCoher=getNetworkWithin(networkAvg, dorsalIndx)
 
     #Average over last two dimensions....
-    ventCoher_mean=stats.nanmean(ventCoher.reshape([numRuns,len(ventral)*len(ventral)]), axis=1)
-    dorsCoher_mean=stats.nanmean(dorsCoher.reshape([numRuns,len(dorsal)*len(dorsal)]), axis=1)
+    ventCoher_mean=stats.nanmean(ventCoher.reshape([numRuns,len(ventralIndx)*len(ventralIndx)]), axis=1)
+    dorsCoher_mean=stats.nanmean(dorsCoher.reshape([numRuns,len(dorsalIndx)*len(dorsalIndx)]), axis=1)
 
     #Correlation means and STDs across all RUNs correlation/coherence values.
     allMeansWithin= (stats.nanmean(ventCoher_mean), stats.nanmean(dorsCoher_mean))
@@ -173,10 +183,10 @@ for sub in cohAll:
 ######
     # Get network btw
     #Early Visual
-    EVbtwAllavg, EVbtwAllstd=getNetworkMeansBtw(networkAvg, ventral, [dorsal], numRuns)
+    EVbtwAllavg, EVbtwAllstd=getNetworkMeansBtw(networkAvg, ventralIndx, [dorsalIndx], numRuns)
 
     # Early Dorsal
-    EDbtwAllavg, EDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsal, [ventral], numRuns)
+    EDbtwAllavg, EDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsalIndx, [ventralIndx], numRuns)
     allMeans=(np.insert(EVbtwAllavg, 0, allMeansWithin[0]), np.insert(EDbtwAllavg, 1, allMeansWithin[1]))
     allSTD=(np.insert(EVbtwAllstd, 0, allSTDWithin[0]), np.insert(EDbtwAllstd, 1, allSTDWithin[1]))
 
