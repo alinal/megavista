@@ -62,7 +62,7 @@ if __name__ == "__main__":
     session=[0,1] # 0= donepazil, 1=placebo
     TR = 2
     #allRuns=['fix_nii', 'right_nii', 'left_nii']
-    allRuns=['fix_nii']
+    allRuns=['right_nii', 'left_nii']
     # TR=2 seconds, 30 TRs in one movie
     segTime=30
 
@@ -103,6 +103,7 @@ if __name__ == "__main__":
             for runName in allRuns:
                 # Initialize lists for each condition:
                 t_fix = []
+                print runName
                 saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts.pck' % len(roi_names)
                 for this_run in sessName[1][runName]:
                     run_rois=[]
@@ -180,4 +181,4 @@ if __name__ == "__main__":
                 # Session and run
                 pickle.dump(sessName[0]+runName, file)
                 file.close()
-                print 'Saving subject TS dictionaries.'
+                print 'Saving subject dictionaries in %s.' % saveFile

@@ -2,7 +2,7 @@
 # al_slicetime_correction.sh
 #
 
-func_dir='/Volumes/Plata1/DorsalVentral/fmri/CG020611/CG020611_nifti'
+func_dir='/Volumes/Plata1/DorsalVentral/fmri/CHT051911/CHT051911_nifti'
 newAdd='_stc'
 
 ## 6. Generate nifit file file (for use later)

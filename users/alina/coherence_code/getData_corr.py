@@ -17,6 +17,8 @@ from nitime.utils import percent_change
 from nitime.viz import drawmatrix_channels, drawgraph_channels
 from nitime.viz import drawmatrix_channels, drawgraph_channels, plot_xcorr
 
+from scipy.cluster.hierarchy import linkage, dendrogram
+from scipy.spatial.distance import pdist, squareform
 
 def reshapeTS(t_fix):
     # TR=2 seconds, 30 TRs in one movie
@@ -34,9 +36,9 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['CGplacebo_fix_nii_43ROIts.pck']
+    subFiles=['CGplacebo_right_nii_43ROIts.pck', 'CGplacebo_left_nii_43ROIts.pck' ]
     normalizeByMean=1
-    plot=1
+    plot=0
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -58,9 +60,10 @@ if __name__ == "__main__":
         # set up dictionaries to store results
         corr_all=dict()
         coh_all = dict()
+        hierarch=dict()
 
         # load time series
-        print 'Loading subject time series.'
+        print 'Loading %s.' % loadFile
         file=open(loadFile, 'r')
         # First file is TS
         t_fix=pickle.load(file)
@@ -78,6 +81,7 @@ if __name__ == "__main__":
 
         corr_all[subName] = np.zeros((numRuns,len(roiNames),len(roiNames))) * np.nan
         coh_all[subName] = np.zeros((numRuns,len(roiNames),len(roiNames))) * np.nan
+        hierarch[subName]=np.zeros((numRuns, len(roiNames)*(len(roiNames)-1)/2)) * np.nan
 
         # Average over all the runs, get an ROI by TS array (TS==averages), TS= 30 TRs long (TR=2 S)
         allROISorig=copy.deepcopy(allROIS)
@@ -125,6 +129,9 @@ if __name__ == "__main__":
             # Save coherence (coher is the average of the coherence over the specified frequency)
             coh_all[subName][runNum]=coher
 
+            # Get hierarchical clustering distances
+            hierarch[subName][runNum]=pdist(fixTS.data)
+
             if plot:
                 #For debugging, lets look at some of the spectra
                 S_original = SpectralAnalyzer(fixTS)
@@ -140,7 +147,7 @@ if __name__ == "__main__":
                 plt.title('Run number '+str(runNum+1)+', '+filterType)
                 plt.show()
 
-        saveFile=base_path+'fmri/Results/'+subFiles[0][:-10]+'_corrVals.pck'
+        saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-10]+'_corrVals_wGM_hierarch.pck'
 
         file=open(saveFile, 'w') # write mode
         # First file loaded is coherence
@@ -151,8 +158,10 @@ if __name__ == "__main__":
         pickle.dump(roiNames, file)
         # save subjects
         pickle.dump(subFiles, file)
+        # Save hierarchical clustering distances
+        pickle.dump(hierarch, file)
         file.close()
-        print 'Saving subject coherence and correlation dictionaries.'
+        print 'Saving coherence and correlation dictionaries in %s.' % saveFile
 
 
 

@@ -31,8 +31,8 @@ if __name__ == "__main__":
     sessionName=['donepazil', 'placebo']
     session=[0,1] # 0= donepazil, 1=placebo
     TR = 2
-    #allRuns=['fix_nii', 'right_nii', 'left_nii']
-    allRuns=['fix_nii']
+    allRuns=['right_nii', 'left_nii']
+    #allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
