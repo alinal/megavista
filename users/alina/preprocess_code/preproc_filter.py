@@ -14,7 +14,6 @@ from nitime.viz import drawmatrix_channels, drawgraph_channels, plot_xcorr
 
 def bp_data(array_data, TR, f_ub, f_lb):
     # Pass in time series data (voxels x TR)
-
     ts_data=ts.TimeSeries(array_data, sampling_interval=TR)
     ts_data_anal=FilterAnalyzer(ts_data, lb=f_lb, ub=f_ub)
     ts_box=ts_data_anal.filtered_boxcar

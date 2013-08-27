@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CGplacebo_right_nii_4_corrVals_wGM_hierarch.pck'
+    fileName='CGplacebo_fix_nii_43ROIts_n_corrVals_wGM_hierarch_newface.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -161,19 +161,19 @@ for sub in cohAll:
     #Plot the data for 4 groups
 
     #Define the streams
-    #ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25',
-    #   'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'L_V2V_0.25','L_V2D_0.25','L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25',
-    #   'l_IOG_p3_0.25', 'l_LOf_p3_0.25', 'l_mFus_p3', 'l_PPA_p4']
-    ventral=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25',
-       'l_pFus_p3', 'l_mFus_p3', 'l_PPA_p4']
+    ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3', 'r_LOf_p3',
+       'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'L_V2V_0.25','L_V2D_0.25','L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25',
+       'l_IOG_p3', 'l_LOf_p3', 'l_mFus_p3', 'l_PPA_p4']
+    #ventral=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25',
+    #   'l_pFus_p3', 'l_mFus_p3', 'l_PPA_p4']
 
-    dorsal=['L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
-       'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
-
-    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
-    #   'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
-    #   'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
+    #dorsal=['L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
     #   'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+
+    dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
+       'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
+       'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
+       'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
 
     ventralIndx=np.where(np.in1d(roiNames, ventral))[0]
     dorsalIndx=np.where(np.in1d(roiNames, dorsal))[0]

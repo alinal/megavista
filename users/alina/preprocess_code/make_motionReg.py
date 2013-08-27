@@ -62,12 +62,23 @@ if __name__ == "__main__":
 
                     # save the columns of data as separate .1D files
                     for i in xrange(data.shape[1]):
+                        mt_deriv=[];
+
+                        # Get derivative
+                        mt_deriv=np.diff(data[:,i])
+                        # Make it the same size as the original
+                        mt_deriv=np.insert(mt_deriv, 0, 0)
 
                         # Run bandpass filter
                         mt_bp=bp_data(data[:,i], TR, f_ub, f_lb)
+                        mt_bp_deriv=bp_data(mt_deriv, TR, f_ub, f_lb)
 
                         # Save file
                         out_file = '{0}{1}_bp.1D'.format(out_file_base, i+1)
                         np.savetxt(out_file, mt_bp)
+
+                        # Save file
+                        out_file = '{0}{1}_bp_deriv.1D'.format(out_file_base, i+1)
+                        np.savetxt(out_file, mt_bp_deriv)
 
 

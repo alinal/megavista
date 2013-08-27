@@ -31,7 +31,7 @@ if __name__ == "__main__":
     sessionName=['donepazil', 'placebo']
     session=[0,1] # 0= donepazil, 1=placebo
     TR = 2
-    allRuns=['right_nii', 'left_nii']
+    allRuns=['right_nii', 'left_nii', 'fix_nii']
     #allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
@@ -71,25 +71,28 @@ if __name__ == "__main__":
             for runName in allRuns:
                 for this_fix in sessName[1][runName]:
                     t_all=[]
-                    t_all=load_nii(nifti_path+this_fix[:-4]+'_stc.nii.gz', ROI_coords,TR, normalize='percent', average=False, verbose=True)
+                    # Load the time series and average over ROI
+                    t_all=load_nii(nifti_path+this_fix[:-4]+'_stc.nii.gz', ROI_coords,TR, normalize='percent', average=True, verbose=True)
                     for roiNum in range(len(rois)):
-                        ts_roi=[]
-                        ts_roidt=[]
-                        ts_roidtAvg=[]
-                        ts_roidtAvgConv=[]
+                        ts_roi=[]; ts_roidt=[]; ts_Box=[];
+                        ts_roidv=[]; ts_roidv_dt=[]; ts_roidv_dtBox=[];
 
                         # Get each time series (voxels x TRs)
                         ts_roi=t_all[roiNum].data
 
-                        # Linearly detrend within each voxel
-                        ts_roidt=signal.detrend(ts_roi, axis=1)
-                        # Average across all voxels within ROI for detrended data
-                        ts_roidtAvg=np.mean(ts_roidt, 0)
+                        # Get the derivative
+                        ts_roidv=np.diff(ts_roi)
+                        # Make it the same size as the original
+                        ts_roidv=np.insert(ts_roidv, 0, 0)
+                        # Detrend the derivative
+                        ts_roidv_dt=signal.detrend(ts_roidv)
+                        #Bandpass the derivative
+                        ts_roidv_dtBox=bp_data(ts_roidv_dt, TR, f_ub, f_lb)
 
+                        # Linearly detrend within each voxel
+                        ts_roidt=signal.detrend(ts_roi, axis=0)
                         # Band pass filter the data using boxcar filter
                         ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
-                        # Average over all voxels
-                        ts_AvgBox=np.mean(ts_Box.data, 0)
 
                         # Plot TS results
                         #origTS=np.mean(ts_roi, 0)
@@ -97,9 +100,9 @@ if __name__ == "__main__":
                         #plt.legend(('Original TS', 'Linearly Filtered TS', 'Bandpass filtered'))
 
                         # Plot frequencies
-                        S_boxcar=SpectralAnalyzer(ts.TimeSeries(ts_AvgBox, sampling_interval=TR))
-                        S_original=SpectralAnalyzer(ts.TimeSeries(np.mean(t_all[roiNum], 1), sampling_interval=TR))
-                        S_dt=SpectralAnalyzer(ts.TimeSeries(ts_roidtAvg, sampling_interval=TR))
+                        S_boxcar=SpectralAnalyzer(ts.TimeSeries(ts_Box, sampling_interval=TR))
+                        S_original=SpectralAnalyzer(ts.TimeSeries(t_all[roiNum], sampling_interval=TR))
+                        S_dt=SpectralAnalyzer(ts.TimeSeries(ts_roidt, sampling_interval=TR))
 
                         fig03 = plt.figure()
                         ax03 = fig03.add_subplot(1, 1, 1)
@@ -113,7 +116,9 @@ if __name__ == "__main__":
                         ax03.legend()
 
                         # Save nuisance time series
-                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc.1D'
-                        np.savetxt(out_file, ts_AvgBox)
+                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc_avgFt.1D'
+                        np.savetxt(out_file, ts_Box)
+                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc_avgFt_deriv.1D'
+                        np.savetxt(out_file, ts_roidv_dtBox)
 
 
