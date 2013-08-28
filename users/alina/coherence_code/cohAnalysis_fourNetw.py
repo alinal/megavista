@@ -95,8 +95,8 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    condition='Fixation'
-    fileName='CHTplacebo_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
+    condition='LeftAttention'
+    fileName='DCAplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -157,55 +157,57 @@ for sub in cohAll:
         plt.show()
 
     #Define the streams
+    ventralRH=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25', 'r_pFus_p3_0.25', 'r_mFus_p3_0.25', 'r_PPA_p4_0.25']
+    ventralLH=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25', 'l_pFus_p3_0.25', 'l_mFus_p3_0.25', 'l_PPA_p4_0.25']
+    dorsalRH=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25']
+    dorsalLH=[ 'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
 
-    ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25',
-       'r_pFus_p3_0.25', 'r_mFus_p3_0.25', 'r_PPA_p4_0.25', 'L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25',
-       'l_mFus_p3_0.25', 'l_PPA_p4_0.25']
-    #ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25', 'r_pFus_p3_0.25', 'r_mFus_p3_0.25', 'r_PPA_p4_0.25']
-    #ventral=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25', 'l_pFus_p3_0.25', 'l_mFus_p3_0.25', 'l_PPA_p4_0.25']
-    dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
-       'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25', 'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
-       'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
-    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25']
-    #dorsal=[ 'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
-    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
-    #  'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+    ventralRHIndx=np.where(np.in1d(roiNames, ventralRH))[0]
+    ventralLHIndx=np.where(np.in1d(roiNames, ventralLH))[0]
+    dorsalRHIndx=np.where(np.in1d(roiNames, dorsalRH))[0]
+    dorsalLHIndx=np.where(np.in1d(roiNames, dorsalLH))[0]
 
-    ventralIndx=np.where(np.in1d(roiNames, ventral))[0]
-    dorsalIndx=np.where(np.in1d(roiNames, dorsal))[0]
-
-    print 'Ventral rois: '+ str(roiNames[ventralIndx])
-    print 'Dorsal rois: ' + str(roiNames[dorsalIndx])
+    print 'Ventral RH rois: '+ str(roiNames[ventralRHIndx])
+    print 'Ventral LH rois: '+ str(roiNames[ventralLHIndx])
+    print 'Dorsal RH rois: ' + str(roiNames[dorsalRHIndx])
+    print 'Dorsal LH rois: ' + str(roiNames[dorsalLHIndx])
 
     # Do Network analysis
     networkAvg= corrAll_t # Correlation (corrAll_t) or coherence (coherAll_t)
     analType='Correlation'
 
     # Get network averages
-    ventCoher=getNetworkWithin(networkAvg, ventralIndx)
-    dorsCoher=getNetworkWithin(networkAvg, dorsalIndx)
+    ventCoherRH=getNetworkWithin(networkAvg, ventralRHIndx)
+    ventCoherLH=getNetworkWithin(networkAvg, ventralLHIndx)
+    dorsCoherRH=getNetworkWithin(networkAvg, dorsalRHIndx)
+    dorsCoherLH=getNetworkWithin(networkAvg, dorsalLHIndx)
 
     #Average over last two dimensions....
-    ventCoher_mean=stats.nanmean(ventCoher.reshape([numRuns,len(ventralIndx)*len(ventralIndx)]), axis=1)
-    dorsCoher_mean=stats.nanmean(dorsCoher.reshape([numRuns,len(dorsalIndx)*len(dorsalIndx)]), axis=1)
+    ventCoherRH_mean=stats.nanmean(ventCoherRH.reshape([numRuns,len(ventralRHIndx)*len(ventralRHIndx)]), axis=1)
+    dorsCoherRH_mean=stats.nanmean(dorsCoherRH.reshape([numRuns,len(dorsalRHIndx)*len(dorsalRHIndx)]), axis=1)
+    ventCoherLH_mean=stats.nanmean(ventCoherLH.reshape([numRuns,len(ventralLHIndx)*len(ventralLHIndx)]), axis=1)
+    dorsCoherLH_mean=stats.nanmean(dorsCoherLH.reshape([numRuns,len(dorsalLHIndx)*len(dorsalLHIndx)]), axis=1)
 
     #Correlation means and STDs across all RUNs correlation/coherence values.
-    allMeansWithin= (stats.nanmean(ventCoher_mean), stats.nanmean(dorsCoher_mean))
-    allSTDWithin=(stats.nanstd(ventCoher_mean), stats.nanstd(dorsCoher_mean))
+    allMeansWithin= (stats.nanmean(ventCoherRH_mean), stats.nanmean(ventCoherLH_mean), stats.nanmean(dorsCoherRH_mean), stats.nanmean(dorsCoherLH_mean))
+    allSTDWithin=(stats.nanstd(ventCoherRH_mean), stats.nanstd(ventCoherLH_mean), stats.nanstd(dorsCoherRH_mean), stats.nanstd(dorsCoherLH_mean))
 
 ######
     # Get network btw
     #Early Visual
-    EVbtwAllavg, EVbtwAllstd=getNetworkMeansBtw(networkAvg, ventralIndx, [dorsalIndx], numRuns)
+    rhEVbtwAllavg, rhEVbtwAllstd=getNetworkMeansBtw(networkAvg, ventralRHIndx, [ventralLHIndx, dorsalRHIndx, dorsalLHIndx], numRuns)
+    lhEVbtwAllavg, lhEVbtwAllstd=getNetworkMeansBtw(networkAvg, ventralLHIndx, [ventralRHIndx, dorsalRHIndx, dorsalLHIndx], numRuns)
 
     # Early Dorsal
-    EDbtwAllavg, EDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsalIndx, [ventralIndx], numRuns)
-    allMeans=(np.insert(EVbtwAllavg, 0, allMeansWithin[0]), np.insert(EDbtwAllavg, 1, allMeansWithin[1]))
-    allSTD=(np.insert(EVbtwAllstd, 0, allSTDWithin[0]), np.insert(EDbtwAllstd, 1, allSTDWithin[1]))
+    rhEDbtwAllavg, rhEDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsalRHIndx, [ventralRHIndx, ventralLHIndx, dorsalLHIndx], numRuns)
+    lhEDbtwAllavg, lhEDbtwAllstd=getNetworkMeansBtw(networkAvg, dorsalLHIndx, [ventralRHIndx, ventralLHIndx, dorsalRHIndx], numRuns)
+
+    allMeans=(np.insert(rhEVbtwAllavg, 0, allMeansWithin[0]),np.insert(lhEVbtwAllavg, 1, allMeansWithin[1]), np.insert(rhEDbtwAllavg, 2, allMeansWithin[2]), np.insert(lhEDbtwAllavg, 3, allMeansWithin[3]))
+    allSTD=(np.insert(rhEVbtwAllstd, 0, allSTDWithin[0]),np.insert(lhEVbtwAllstd, 1, allSTDWithin[1]), np.insert(rhEDbtwAllstd, 2, allSTDWithin[2]), np.insert(lhEDbtwAllstd, 3, allSTDWithin[3]))
 
     # Make bar graph
     titleName=condition+ analType
-    title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'Ventral', 'Dorsal')
+    title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'rhVentral', 'lhVentral', 'rhDorsal', 'lhDorsal')
     N=len(allMeansWithin)
     ind = np.arange(N)  # the x locations for the groups
     width = 0.1       # the width of the bars
@@ -213,10 +215,15 @@ for sub in cohAll:
     ax = fig.add_subplot(111)
     rects1 = ax.bar(ind, allMeans[0], width, color='r', yerr=allSTD[0])
     rects2 = ax.bar(ind+width*1, allMeans[1], width, color='b', yerr=allSTD[1])
+    rects3 = ax.bar(ind+width*2, allMeans[2], width, color='g', yerr=allSTD[2])
+    rects4 = ax.bar(ind+width*3, allMeans[3], width, color='k', yerr=allSTD[3])
 
     # Print results
-    print 'All means ventral: %s' % allMeans[0]
-    print 'All means dorsal: %s' % allMeans[1]
+    print 'All means rh ventral: %s' % allMeans[0]
+    print 'All means lh ventral: %s' % allMeans[1]
+    print 'All means rh dorsal: %s' % allMeans[2]
+    print 'All means lh dorsal: %s' % allMeans[3]
+
 
     # add some labels
     ax.set_ylabel('Means')
@@ -224,11 +231,16 @@ for sub in cohAll:
     ax.set_xticks(ind+width*2)
     ax.set_xticklabels( labels )
     ax.set_ylim( 0, 1.0 )
-    ax.legend((rects1[0], rects2[0]),
-        ('W/ Ventral', 'W/ Dorsal'))
+    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0]),
+        ('W/ rh Ventral',  'W/ lh Ventral', 'W/ rh Dorsal', 'W/ lh Dorsal'))
 
     # Show final figure
     fig.show()
+
+    # Try hierarchical clustering
+    #Y=pdist(corrAvg_t, 'correlation')
+    #Z=linkage(corrAvg_t, 'single', 'correlation')
+    #dendrogram(Z, color_threshold=0)
 
 # Make a connection graph
 

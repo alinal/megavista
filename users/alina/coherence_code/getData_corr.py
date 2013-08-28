@@ -36,7 +36,7 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['DCAplacebo_fix_nii_38ROIts_22Reg.pck', 'DCAplacebo_left_nii_38ROIts_22Reg.pck', 'DCAplacebo_right_nii_38ROIts_22Reg.pck']
+    subFiles=['CHTplacebo_fix_nii_38ROIts_22Reg.pck', 'DCAplacebo_left_nii_38ROIts_22Reg.pck', 'DCAplacebo_right_nii_38ROIts_22Reg.pck']
     normalizeByMean=1
     plot=0
 
@@ -91,12 +91,13 @@ if __name__ == "__main__":
         if normalizeByMean:
             for numTS in range(numRuns):
                 allROIS[:,numTS,:]=allROIS[:,numTS,:]-AvgRuns
+                1/0
                 # plt.figure()
                 #Examples time series subtraction, one ROI
                 #plt.plot(allROIS[0,numTS,:], color='r', label='newTS')
                 #plt.plot(allROISorig[0,numTS,:], color='b', label='oldTS')
                 #plt.plot(AvgRuns[0,:], color='g', label='avgTS')
-                #plt.legend(loc='best'); plt.title(roi_names[0]);
+                #plt.legend(loc='best'); plt.title(roiNames[0]);
                 #plt.show()
 
       # Get roi correlations and coherence
