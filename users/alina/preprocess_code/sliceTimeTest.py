@@ -94,7 +94,7 @@ if __name__ == "__main__":
             niftiOrig=load_nii(nifti_path+'epi04_mcf.nii.gz', ROI_coords, TR, average='True')
             niftiSTc=load_nii(nifti_path+'epi04_mcf_stc.nii.gz', ROI_coords, TR, average='True')
 
-            roiNum=0;
+            roiNum=14;
             roi1Orig=niftiOrig[roiNum]
             roi1ST=niftiSTc[roiNum]
 

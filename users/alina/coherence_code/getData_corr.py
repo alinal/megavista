@@ -36,7 +36,7 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['CGplacebo_fix_nii_43ROIts_newface.pck']
+    subFiles=['DCAplacebo_fix_nii_38ROIts_22Reg.pck', 'DCAplacebo_left_nii_38ROIts_22Reg.pck', 'DCAplacebo_right_nii_38ROIts_22Reg.pck']
     normalizeByMean=1
     plot=0
 
@@ -147,7 +147,7 @@ if __name__ == "__main__":
                 plt.title('Run number '+str(runNum+1)+', '+filterType)
                 plt.show()
 
-        saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-10]+'_corrVals_wGM_hierarch_newface.pck'
+        saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-10]+'_corrVals_wGM_hierarch_22reg.pck'
 
         file=open(saveFile, 'w') # write mode
         # First file loaded is coherence

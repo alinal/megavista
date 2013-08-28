@@ -90,14 +90,17 @@ def getNetworkMeansBtw(networkAvg, netw1, other_netw, numRuns):
 if __name__ == "__main__":
     # Close any opened plots
     plt.close('all')
+    # Plot Matrix
+    plotMat=0
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    fileName='CGplacebo_fix_nii_43ROIts_n_corrVals_wGM_hierarch_newface.pck'
+    condition='RightAttention'
+    fileName='DCAplacebo_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
-    condition='NormalizedFixationRun'
+
     loadFile=fmri_path+'Results/correlation/' +fileName
 
     figSize=[10., 10.]
@@ -145,12 +148,13 @@ for sub in cohAll:
     corrAvg_t=np.mean(corrAll_t,0)
     corrSTD=np.std(corrAll_t, 0)
 
-    # Plot graph of coherence and correlation values
-    fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0) # title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
-    fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
-    fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0) # title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
-    fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
-    plt.show()
+    if plotMat:
+        # Plot graph of coherence and correlation values
+        fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0) # title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
+        fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
+        fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0) # title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
+        fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
+        plt.show()
 
     #Plot data for 3 streams (btw for all)
     #titleName=condition+" coherence "
@@ -161,19 +165,19 @@ for sub in cohAll:
     #Plot the data for 4 groups
 
     #Define the streams
-    ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3', 'r_LOf_p3',
-       'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'L_V2V_0.25','L_V2D_0.25','L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25',
-       'l_IOG_p3', 'l_LOf_p3', 'l_mFus_p3', 'l_PPA_p4']
-    #ventral=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25',
-    #   'l_pFus_p3', 'l_mFus_p3', 'l_PPA_p4']
 
-    #dorsal=['L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
+    #ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25',
+    #   'r_pFus_p3_0.25', 'r_mFus_p3_0.25', 'r_PPA_p4_0.25', 'L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25',
+    #   'l_mFus_p3_0.25', 'l_PPA_p4_0.25']
+    #ventral=['R_V2V_0.25', 'R_V2D_0.25', 'R_V3V_0.25', 'R_V3D_0.25', 'R_V4_0.25', 'r_IOG_p3_0.25', 'r_LOf_p3_0.25', 'r_pFus_p3_0.25', 'r_mFus_p3_0.25', 'r_PPA_p4_0.25']
+    ventral=['L_V2V_0.25', 'L_V2D_0.25', 'L_V3V_0.25', 'L_V3D_0.25', 'L_V4_0.25', 'l_IOG_p3_0.25', 'l_LOf_p3_0.25', 'l_pFus_p3_0.25', 'l_mFus_p3_0.25', 'l_PPA_p4_0.25']
+    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
+    #   'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25', 'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
     #   'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
-
-    dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25',
-       'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
-       'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25',
-       'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25']
+    dorsal=[ 'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
+    #dorsal=['R_V3A_0.25', 'R_MT_al_.5_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25', 'R_IPS3_0.25', 'R_IPS4_0.25', 'R_IPS5_0.25',
+    #  'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']
 
     ventralIndx=np.where(np.in1d(roiNames, ventral))[0]
     dorsalIndx=np.where(np.in1d(roiNames, dorsal))[0]

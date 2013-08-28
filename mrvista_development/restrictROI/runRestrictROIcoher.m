@@ -1,4 +1,6 @@
-
+% Restricts ROIs to activation and saves out logfile. 
+%
+% AL
 
 % Set directories
 genDir='/Volumes/Plata1/DorsalVentral';
@@ -16,7 +18,7 @@ setSessions;
 
 %Open and start a txt file
 dateAndTime=datestr(now,'mmddyy');
-logFile=fullfile(expDir, 'Results', ['RestrictToPH' dateAndTime '.txt']);
+logFile=fullfile(expDir, 'Results','ROIsizes',  ['RestrictToPH_' sessions{1} dateAndTime '.txt']);
 fid=fopen(logFile,'w');
 fprintf(fid, '\n Threshold: %2.2f, phWindow: [%2.2f %2.2f]\n',...
     threshold, phWindow(1), phWindow(2));

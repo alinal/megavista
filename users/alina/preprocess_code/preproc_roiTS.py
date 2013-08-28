@@ -59,10 +59,10 @@ if __name__ == "__main__":
     plotAll=0;
 
     sessionName=['donepazil', 'placebo']
-    session=[0,1] # 0= donepazil, 1=placebo
+    session=[1] # 0= donepazil, 1=placebo
     TR = 2
-    #allRuns=['fix_nii', 'right_nii', 'left_nii']
-    allRuns=['fix_nii']
+    allRuns=['right_nii', 'left_nii', 'fix_nii']
+    #allRuns=['fix_nii']
     # TR=2 seconds, 30 TRs in one movie
     segTime=30
 
@@ -89,8 +89,7 @@ if __name__ == "__main__":
 
             # Get the coordinates of the ROIs, while accounting for the
             # up-sampling:
-            ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp)
-                           for f in ROI_files]
+            ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp) for f in ROI_files]
 
 
             nifti_path = fmri_path +sessName[0] + '/%s_nifti/' % sessName[0]
@@ -104,7 +103,7 @@ if __name__ == "__main__":
                 # Initialize lists for each condition:
                 t_fix = []
                 print runName
-                saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_newface.pck' % len(roi_names)
+                saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_22Reg.pck' % len(roi_names)
                 for this_run in sessName[1][runName]:
                     run_rois=[]
                     allData=load_nii(nifti_path+this_run, ROI_coords, TR, normalize='percent', average=False, verbose=True)
