@@ -96,7 +96,7 @@ if __name__ == "__main__":
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     condition='LeftAttention'
-    fileName='DCAplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
+    fileName='WCplacebo_left_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -191,6 +191,7 @@ for sub in cohAll:
     #Correlation means and STDs across all RUNs correlation/coherence values.
     allMeansWithin= (stats.nanmean(ventCoherRH_mean), stats.nanmean(ventCoherLH_mean), stats.nanmean(dorsCoherRH_mean), stats.nanmean(dorsCoherLH_mean))
     allSTDWithin=(stats.nanstd(ventCoherRH_mean), stats.nanstd(ventCoherLH_mean), stats.nanstd(dorsCoherRH_mean), stats.nanstd(dorsCoherLH_mean))
+    allSTDWithin=allSTDWithin/np.sqrt(numRuns)
 
 ######
     # Get network btw
@@ -204,6 +205,7 @@ for sub in cohAll:
 
     allMeans=(np.insert(rhEVbtwAllavg, 0, allMeansWithin[0]),np.insert(lhEVbtwAllavg, 1, allMeansWithin[1]), np.insert(rhEDbtwAllavg, 2, allMeansWithin[2]), np.insert(lhEDbtwAllavg, 3, allMeansWithin[3]))
     allSTD=(np.insert(rhEVbtwAllstd, 0, allSTDWithin[0]),np.insert(lhEVbtwAllstd, 1, allSTDWithin[1]), np.insert(rhEDbtwAllstd, 2, allSTDWithin[2]), np.insert(lhEDbtwAllstd, 3, allSTDWithin[3]))
+    allSTD=allSTD/np.sqrt(numRuns)
 
     # Make bar graph
     titleName=condition+ analType
@@ -213,8 +215,8 @@ for sub in cohAll:
     width = 0.1       # the width of the bars
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    rects1 = ax.bar(ind, allMeans[0], width, color='r', yerr=allSTD[0])
-    rects2 = ax.bar(ind+width*1, allMeans[1], width, color='b', yerr=allSTD[1])
+    rects1 = ax.bar(ind, allMeans[0], width, color='b', yerr=allSTD[0])
+    rects2 = ax.bar(ind+width*1, allMeans[1], width, color='r', yerr=allSTD[1])
     rects3 = ax.bar(ind+width*2, allMeans[2], width, color='g', yerr=allSTD[2])
     rects4 = ax.bar(ind+width*3, allMeans[3], width, color='k', yerr=allSTD[3])
 

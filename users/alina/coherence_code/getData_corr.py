@@ -36,9 +36,9 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['CHTplacebo_fix_nii_38ROIts_22Reg.pck', 'DCAplacebo_left_nii_38ROIts_22Reg.pck', 'DCAplacebo_right_nii_38ROIts_22Reg.pck']
+    subFiles=['WCplacebo_fix_nii_31ROIts_22Reg.pck', 'WCplacebo_left_nii_31ROIts_22Reg.pck', 'WCplacebo_right_nii_31ROIts_22Reg.pck']
     normalizeByMean=1
-    plot=0
+    plot=1
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -91,7 +91,6 @@ if __name__ == "__main__":
         if normalizeByMean:
             for numTS in range(numRuns):
                 allROIS[:,numTS,:]=allROIS[:,numTS,:]-AvgRuns
-                1/0
                 # plt.figure()
                 #Examples time series subtraction, one ROI
                 #plt.plot(allROIS[0,numTS,:], color='r', label='newTS')

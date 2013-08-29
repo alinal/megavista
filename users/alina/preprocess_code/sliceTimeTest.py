@@ -83,8 +83,7 @@ if __name__ == "__main__":
 
             # Get the coordinates of the ROIs, while accounting for the
             # up-sampling:
-            ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp)
-                               for f in ROI_files]
+            ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp) for f in ROI_files]
 
              # Initialize lists for each behavioral condition:
             t_fix = []
@@ -94,7 +93,7 @@ if __name__ == "__main__":
             niftiOrig=load_nii(nifti_path+'epi04_mcf.nii.gz', ROI_coords, TR, average='True')
             niftiSTc=load_nii(nifti_path+'epi04_mcf_stc.nii.gz', ROI_coords, TR, average='True')
 
-            roiNum=14;
+            roiNum=13;
             roi1Orig=niftiOrig[roiNum]
             roi1ST=niftiSTc[roiNum]
 
