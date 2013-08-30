@@ -95,8 +95,8 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    condition='LeftAttention'
-    fileName='WCplacebo_left_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck'
+    condition='Left Attention'
+    fileName='CHTplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -191,7 +191,6 @@ for sub in cohAll:
     #Correlation means and STDs across all RUNs correlation/coherence values.
     allMeansWithin= (stats.nanmean(ventCoherRH_mean), stats.nanmean(ventCoherLH_mean), stats.nanmean(dorsCoherRH_mean), stats.nanmean(dorsCoherLH_mean))
     allSTDWithin=(stats.nanstd(ventCoherRH_mean), stats.nanstd(ventCoherLH_mean), stats.nanstd(dorsCoherRH_mean), stats.nanstd(dorsCoherLH_mean))
-    allSTDWithin=allSTDWithin/np.sqrt(numRuns)
 
 ######
     # Get network btw
@@ -208,7 +207,7 @@ for sub in cohAll:
     allSTD=allSTD/np.sqrt(numRuns)
 
     # Make bar graph
-    titleName=condition+ analType
+    titleName=condition+ ' ' + analType
     title= titleName+ ' by Network for ' +sub+ ' for '+ str(numRuns)+' runs'; labels=( 'rhVentral', 'lhVentral', 'rhDorsal', 'lhDorsal')
     N=len(allMeansWithin)
     ind = np.arange(N)  # the x locations for the groups
@@ -218,7 +217,7 @@ for sub in cohAll:
     rects1 = ax.bar(ind, allMeans[0], width, color='b', yerr=allSTD[0])
     rects2 = ax.bar(ind+width*1, allMeans[1], width, color='r', yerr=allSTD[1])
     rects3 = ax.bar(ind+width*2, allMeans[2], width, color='g', yerr=allSTD[2])
-    rects4 = ax.bar(ind+width*3, allMeans[3], width, color='k', yerr=allSTD[3])
+    rects4 = ax.bar(ind+width*3, allMeans[3], width, color='m', yerr=allSTD[3])
 
     # Print results
     print 'All means rh ventral: %s' % allMeans[0]
