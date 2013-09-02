@@ -31,20 +31,42 @@
 # 'l_pFus_p3_0.25','l_mFus_p3_0.25',  'l_pSTS_p3_0.25', 'l_PPA_p4_0.25',
 
 
-rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'R_LO1_0.25', 'R_LO2_0.25',
+rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 
       'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
-      'R_IPS3_0.25', 'R_IPS4_0.25', 'R_MT_al_.5_0.25',
-      'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25', 'L_LO1_0.25','L_LO2_0.25',
+      'r_mFus_p3_0.25', 'r_pFus_p3_0.25', 'r_PPA_p4_0.25',
+      'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25', 
       'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25',
-      'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25', 'L_MT_al_.5_0.25']
+      'l_mFus_p3_0.25', 'l_pFus_p3_0.25', 'l_IOG_p3_0.25', 'l_PPA_p4_0.25']
 
 nuisReg=['mcf1_bp.1D', 'mcf2_bp.1D', 'mcf3_bp.1D', 'mcf4_bp.1D','mcf5_bp.1D', 'mcf6_bp.1D', 'lVent_4mm_stc_avgFt.1D',
         'rVent_4mm_stc_avgFt.1D', 'rWM_6mm_stc_avgFt.1D', 'lWM_6mm_stc_avgFt.1D', 'gray_al_stc_avgFt.1D', 'mcf1_bp_deriv.1D', 'mcf2_bp_deriv.1D',
          'mcf3_bp_deriv.1D', 'mcf4_bp_deriv.1D','mcf5_bp_deriv.1D', 'mcf6_bp_deriv.1D','lVent_4mm_stc_avgFt_deriv.1D',
         'rVent_4mm_stc_avgFt_deriv.1D', 'rWM_6mm_stc_avgFt_deriv.1D', 'lWM_6mm_stc_avgFt_deriv.1D', 'gray_al_stc_avgFt_deriv.1D']
 
-subjects = {
-    'WC':[['WC031911', dict(loc_nii =['epi01_mcf.nii.gz',
+subjects = { 'SS':[['SS012311', dict(loc_nii =['epi01_mcf.nii.gz',
+                                       'epi11_mcf.nii.gz'],
+                             fix_nii = ['epi04_mcf.nii.gz',
+                                        'epi07_mcf.nii.gz',
+                                        'epi10_mcf.nii.gz'],
+                             left_nii =  ['epi03_mcf.nii.gz',
+                                          'epi06_mcf.nii.gz',
+                                          'epi09_mcf.nii.gz'],
+                             right_nii = ['epi02_mcf.nii.gz',
+                                          'epi05_mcf.nii.gz',
+                                          'epi08_mcf.nii.gz'])],
+           ['SS011011',dict(loc_nii = ['epi01_mcf.nii.gz',
+                                       'epi10_mcf.nii.gz'],
+                            fix_nii = ['epi04_mcf.nii.gz',
+                                       'epi07_mcf.nii.gz'],
+                            left_nii = ['epi03_mcf.nii.gz',
+                                        'epi06_mcf.nii.gz',
+                                        'epi09_mcf.nii.gz'],
+                            right_nii =  ['epi02_mcf.nii.gz',
+                                          'epi05_mcf.nii.gz',
+                                          'epi08_mcf.nii.gz'])]]}
+
+'''
+ 'WC':[['WC031911', dict(loc_nii =['epi01_mcf.nii.gz',
                                        'epi11_mcf.nii.gz'],
                              left_nii = ['epi02_mcf.nii.gz',
                                         'epi05_mcf.nii.gz',
@@ -68,8 +90,6 @@ subjects = {
                                           'epi09_mcf.nii.gz'])]]}
 
 
-
-'''
  'DCA':[['DCA042511',dict(loc_nii =['epi01_mcf.nii.gz',
                                        'epi11_mcf.nii.gz'],
                              fix_nii = ['epi04_mcf.nii.gz',
@@ -167,28 +187,6 @@ subjects = {
      #                                    }
 
 '''
-     'SS':[
-         ['SS012311', dict(loc_nii =['epi01_mcf.nii.gz',
-                                       'epi11_mcf.nii.gz'],
-                             fix_nii = ['epi04_mcf.nii.gz',
-                                        'epi07_mcf.nii.gz',
-                                        'epi10_mcf.nii.gz'],
-                             left_nii =  ['epi03_mcf.nii.gz',
-                                          'epi06_mcf.nii.gz',
-                                          'epi09_mcf.nii.gz'],
-                             right_nii = ['epi02_mcf.nii.gz',
-                                          'epi05_mcf.nii.gz',
-                                          'epi08_mcf.nii.gz'])],
-           ['SS011011',dict(loc_nii = ['epi01_mcf.nii.gz',
-                                       'epi10_mcf.nii.gz'],
-                            fix_nii = ['epi04_mcf.nii.gz',
-                                       'epi07_mcf.nii.gz'],
-                            left_nii = ['epi03_mcf.nii.gz',
-                                        'epi06_mcf.nii.gz',
-                                        'epi09_mcf.nii.gz'],
-                            right_nii =  ['epi02_mcf.nii.gz',
-                                          'epi05_mcf.nii.gz',
-                                          'epi08_mcf.nii.gz'])]],
 
     # 'MO':[['MO040411', dict(loc_nii =['epi01_mcf.nii.gz',
     #                                   'epi11_mcf.nii.gz'],
