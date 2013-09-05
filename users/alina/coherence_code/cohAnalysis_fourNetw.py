@@ -95,8 +95,8 @@ if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
-    condition='Left Attention'
-    fileName='CHTplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck'
+    condition='Fixation'
+    fileName='CGplacebo_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizeplacebo1runs_2012-02-08.pck'
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
@@ -237,11 +237,7 @@ for sub in cohAll:
 
     # Show final figure
     fig.show()
-
-    # Try hierarchical clustering
-    #Y=pdist(corrAvg_t, 'correlation')
-    #Z=linkage(corrAvg_t, 'single', 'correlation')
-    #dendrogram(Z, color_threshold=0)
+    1/0
 
 # Make a connection graph
 

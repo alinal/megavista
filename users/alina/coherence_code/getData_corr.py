@@ -36,7 +36,7 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['WCplacebo_fix_nii_31ROIts_22Reg.pck', 'WCplacebo_left_nii_31ROIts_22Reg.pck', 'WCplacebo_right_nii_31ROIts_22Reg.pck']
+    subFiles=['SSplacebo_fix_nii_27ROIts_22Reg.pck', 'SSplacebo_left_nii_27ROIts_22Reg.pck', 'SSplacebo_right_nii_27ROIts_22Reg.pck']
     normalizeByMean=1
     plot=1
 
