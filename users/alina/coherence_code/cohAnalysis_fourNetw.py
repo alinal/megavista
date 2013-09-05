@@ -93,7 +93,7 @@ if __name__ == "__main__":
     # Plot Matrix
     plotMat=0
 
-    base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
+    base_path = '/Users/Alina/Desktop/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     condition='Fixation'
     fileName='CGplacebo_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck'
@@ -101,7 +101,8 @@ if __name__ == "__main__":
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
 
-    loadFile=fmri_path+'Results/correlation/' +fileName
+    #loadFile=fmri_path+'Results/correlation/' +fileName
+    loadFile=base_path+fileName
 
     figSize=[10., 10.]
     # Load the data
@@ -240,5 +241,29 @@ for sub in cohAll:
     1/0
 
 # Make a connection graph
+allIndx=np.concatenate([ventralRHIndx, dorsalRHIndx])
+rhROIs=coherAvg_t[allIndx,:][:,allIndx]
+print roiNames[allIndx]
 
+plt.figure(figsize=(8,8))
+# Zero out values below diagonal
+rhROIs=np.triu(rhROIs, k=1)
+
+# Make a graph object
+G1 = nx.Graph(weighted = True)
+G1 = nx.from_numpy_matrix(rhROIs,G1)
+
+# Set up labels and partitions
+nnod=np.shape(rhROIs)[1]
+nod_labels=roiNames[allIndx]
+
+pos=nx.circular_layout(G1)
+
+# Add nodes to the plot
+nx.draw_networkx_nodes(G1,pos,alpha=0.5,node_color='w')
+
+#draw positive edges
+evals_pos = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']>thresh])
+e_pos = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']>thresh]
+                    
 #fig04 = drawgraph_channels(cohAll[sub], roiNames) #color_anchor=1
