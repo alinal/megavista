@@ -245,7 +245,19 @@ allIndx=np.concatenate([ventralRHIndx, dorsalRHIndx])
 rhROIs=coherAvg_t[allIndx,:][:,allIndx]
 print roiNames[allIndx]
 
+#how to do the graph:
+do_tstat = False
+thresh = .75 #abs thresh for graph (either t or fisher-r, depending on do_tstat), 0 = no thresh
+    
+#make into a t-stat map if called upon
+if do_tstat:
+    rhROIs = cmat[net]/cmat_se[net]
+    nweight = 2
+else:
+    nweight = 25
+
 plt.figure(figsize=(8,8))
+
 # Zero out values below diagonal
 rhROIs=np.triu(rhROIs, k=1)
 
@@ -265,5 +277,16 @@ nx.draw_networkx_nodes(G1,pos,alpha=0.5,node_color='w')
 #draw positive edges
 evals_pos = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']>thresh])
 e_pos = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']>thresh]
+
+nx.draw_networkx_edges(G1,pos,edgelist=e_pos,width=evals_pos*nweight,alpha=1,edge_color='r')
                     
+#draw negative edges
+evals_neg = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh])
+e_neg = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh]
+        
+nx.draw_networkx_edges(G1,pos,edgelist=e_neg,width=evals_neg*-1*nweight,alpha=1,edge_color='b')
+
+#draw labels
+nx.draw_networkx_labels(G1,pos,nod_labels,font_size=8,font_weight='bold')
+
 #fig04 = drawgraph_channels(cohAll[sub], roiNames) #color_anchor=1
