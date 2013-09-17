@@ -9,7 +9,6 @@ import networkAnal
 reload(networkAnal)
 from networkAnal import get3NetworkAvg, getNetworkWithin, getNetworkBtw
 
-
 from matplotlib import mpl
 from matplotlib import pyplot as plt
 import matplotlib.ticker as ticker
@@ -93,7 +92,8 @@ if __name__ == "__main__":
     # Plot Matrix
     plotMat=0
 
-    base_path = '/Users/Alina/Desktop/' # Change this to your path
+    #base_path = '/Users/Alina/Desktop/' # Change this to your path
+    base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     condition='Fixation'
     fileName='CGplacebo_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck'
@@ -101,8 +101,8 @@ if __name__ == "__main__":
     #fileName='CG&CHT&DCAallROIsOrderFix_normalizedonepazil1runs_2013-05-29.pck'
     #fileName='CG&CHT&DCAallROIsOrderLeft_normalizeplacebo1runs_2013-05-29.pck'
 
-    #loadFile=fmri_path+'Results/correlation/' +fileName
-    loadFile=base_path+fileName
+    loadFile=fmri_path+'Results/correlation/' +fileName
+    #loadFile=base_path+fileName
 
     figSize=[10., 10.]
     # Load the data
@@ -151,9 +151,9 @@ for sub in cohAll:
 
     if plotMat:
         # Plot graph of coherence and correlation values
-        fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0) # title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
+        fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0,  title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
         fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
-        fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0) # title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
+        fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0,  title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
         fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
         plt.show()
 
@@ -238,28 +238,36 @@ for sub in cohAll:
 
     # Show final figure
     fig.show()
-    1/0
 
+##########
 # Make a connection graph
-allIndx=np.concatenate([ventralRHIndx, dorsalRHIndx])
-rhROIs=coherAvg_t[allIndx,:][:,allIndx]
+allIndx=np.concatenate([dorsalRHIndx, dorsalLHIndx])
+rhROIs=networkAvg[:, allIndx,:][:,:,allIndx]
 print roiNames[allIndx]
 
 #how to do the graph:
 do_tstat = False
-thresh = .75 #abs thresh for graph (either t or fisher-r, depending on do_tstat), 0 = no thresh
-    
+thresh = 0 #abs thresh for graph (either t or fisher-r, depending on do_tstat), 0 = no thresh
+    #p(boncorr,18 tests,27subs,2tails)<0.05 - 0.0028, t=3.3
+    #p(uncorr,27 subs,2tails)<0.05 - t=2.06 
+# Find mean and SEM
+cmat=stats.nanmean(rhROIs, axis=0)
+numVals= sum(np.isnan(cmat[0])==False)
+cmat_se=stats.nanstd(rhROIs, axis=0)/np.sqrt(numVals)
+
 #make into a t-stat map if called upon
 if do_tstat:
-    rhROIs = cmat[net]/cmat_se[net]
+    rhROIs = cmat/cmat_se
     nweight = 2
 else:
-    nweight = 25
-
-plt.figure(figsize=(8,8))
+    rhROIs=cmat
+    nweight = 8
+    aweight=3
 
 # Zero out values below diagonal
 rhROIs=np.triu(rhROIs, k=1)
+
+plt.figure(figsize=(8,8))
 
 # Make a graph object
 G1 = nx.Graph(weighted = True)
@@ -267,7 +275,7 @@ G1 = nx.from_numpy_matrix(rhROIs,G1)
 
 # Set up labels and partitions
 nnod=np.shape(rhROIs)[1]
-nod_labels=roiNames[allIndx]
+nod_labels=dict(zip(range(nnod),roiNames[allIndx]))
 
 pos=nx.circular_layout(G1)
 
@@ -278,15 +286,34 @@ nx.draw_networkx_nodes(G1,pos,alpha=0.5,node_color='w')
 evals_pos = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']>thresh])
 e_pos = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']>thresh]
 
-nx.draw_networkx_edges(G1,pos,edgelist=e_pos,width=evals_pos*nweight,alpha=1,edge_color='r')
+#nx.draw_networkx_edges(G1,pos,edgelist=e_pos,width=evals_pos*nweight,alpha=1,edge_color='r')
+
+for e,e_p in enumerate(e_pos):
+        aval = evals_pos[e]*aweight
+        if aval > 1:
+            aval = 1
+        nx.draw_networkx_edges(G1,pos,edgelist=[e_p],width=evals_pos[e]*nweight,
+                                       edge_color='r',alpha=aval)
+
                     
 #draw negative edges
 evals_neg = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh])
 e_neg = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh]
         
-nx.draw_networkx_edges(G1,pos,edgelist=e_neg,width=evals_neg*-1*nweight,alpha=1,edge_color='b')
+#nx.draw_networkx_edges(G1,pos,edgelist=e_neg,width=evals_neg*-1*nweight,alpha=1,edge_color='b')
+
+for e,e_n in enumerate(e_neg):
+        aval = evals_neg[e]*-1*aweight
+        if aval > 1:
+            aval = 1
+        nx.draw_networkx_edges(G1,pos,edgelist=[e_n],width=evals_neg[e]*-1*nweight,
+                                   edge_color='b',alpha=aval)
+
 
 #draw labels
 nx.draw_networkx_labels(G1,pos,nod_labels,font_size=8,font_weight='bold')
+
+plt.show()
+plt.title('All Dorsal ROIs for ' +sub)
 
 #fig04 = drawgraph_channels(cohAll[sub], roiNames) #color_anchor=1
