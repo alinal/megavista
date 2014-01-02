@@ -102,10 +102,14 @@ if __name__ == "__main__":
     #'DCAplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
     #fileNames=['CHTplacebo_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck', 'CHTplacebo_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
     #'CHTplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
-    #fileNames=['SSplacebo_fix_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck', 'SSplacebo_right_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck',
-    #'SSplacebo_left_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck']
-    fileNames=['WCplacebo_fix_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck', 'WCplacebo_right_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck',
-    'WCplacebo_left_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck']
+    #fileNames=['SSdonepazil_fix_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck', 'SSdonepazil_right_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck',
+    #'SSdonepazil_left_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck']
+    #fileNames=['WCplacebo_fix_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck', 'WCplacebo_right_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck',
+    #'WCplacebo_left_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck']
+    #fileNames=['CGdonepazil_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck', 'CGdonepazil_right_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck',
+    #'CGdonepazil_left_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck']
+    fileNames=['CHTdonepazil_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck','CHTdonepazil_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
+    'CHTdonepazil_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
     allNetworkAvg=dict(); 
 
 for ii, fileName in enumerate(fileNames):

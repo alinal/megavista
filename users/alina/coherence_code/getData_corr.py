@@ -36,9 +36,13 @@ def reshapeTS(t_fix):
 if __name__ == "__main__":
 
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
-    subFiles=['SSplacebo_fix_nii_27ROIts_22Reg.pck', 'SSplacebo_left_nii_27ROIts_22Reg.pck', 'SSplacebo_right_nii_27ROIts_22Reg.pck']
+    #subFiles=['SSdonepazil_fix_nii_27ROIts_22Reg.pck', 'SSdonepazil_left_nii_27ROIts_22Reg.pck', 'SSdonepazil_right_nii_27ROIts_22Reg.pck']
+    #subFiles=['CGdonepazil_fix_nii_43ROIts_22Reg.pck', 'CGdonepazil_left_nii_43ROIts_22Reg.pck', 'CGdonepazil_right_nii_43ROIts_22Reg.pck' ]
+    #subFiles=['CHTdonepazil_fix_nii_38ROIts_22Reg.pck', 'CHTdonepazil_left_nii_38ROIts_22Reg.pck', 'CHTdonepazil_right_nii_38ROIts_22Reg.pck']
+    #subFiles=['WCdonepazil_fix_nii_32ROIts_22Reg.pck', 'WCdonepazil_left_nii_32ROIts_22Reg.pck', 'WCdonepazil_right_nii_32ROIts_22Reg.pck']
+    subFiles=['DCAdonepazil_fix_nii_38ROIts_22Reg.pck', 'DCAdonepazil_left_nii_38ROIts_22Reg.pck', 'DCAdonepazil_right_nii_38ROIts_22Reg.pck']
     normalizeByMean=1
-    plot=1
+    plot=0
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
