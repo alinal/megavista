@@ -57,6 +57,7 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
 
     plotAll=0;
+    saveROI=0;
 
     sessionName=['donepazil', 'placebo']
     session=[0] # 0= donepazil, 1=placebo
@@ -153,7 +154,9 @@ if __name__ == "__main__":
                         # Regression steps
                         tsArray=np.array(ts_Box.data)
                         residMatrix=[]
+                        1/0
                         # Do multiple regression using least squares.
+                        # Regress within each voxel
                         for vox in range(tsArray.shape[0]):
                             b_weight=[]
                             b_weight=np.linalg.lstsq(regArray,tsArray[vox])[0]
@@ -167,17 +170,18 @@ if __name__ == "__main__":
                         run_rois.append(ts.TimeSeries(roiAvg, sampling_interval=TR))
                     t_fix.append(run_rois)
 
-                # Save time series
-                file=open(saveFile, 'w') # write mode
-                # First file loaded is TS files
-                pickle.dump(t_fix, file)
-                # Second file loaded is ROI names
-                pickle.dump(roi_names, file)
-                # Subject and type
-                pickle.dump(subject+sessionName[sess], file)
-                # Third file is run names
-                pickle.dump(sessName[1][runName], file)
-                # Session and run
-                pickle.dump(sessName[0]+runName, file)
-                file.close()
-                print 'Saving subject dictionaries in %s.' % saveFile
+                if saveROI:
+                    # Save time series
+                    file=open(saveFile, 'w') # write mode
+                    # First file loaded is TS files
+                    pickle.dump(t_fix, file)
+                    # Second file loaded is ROI names
+                    pickle.dump(roi_names, file)
+                    # Subject and type
+                    pickle.dump(subject+sessionName[sess], file)
+                    # Third file is run names
+                    pickle.dump(sessName[1][runName], file)
+                    # Session and run
+                    pickle.dump(sessName[0]+runName, file)
+                    file.close()
+                    print 'Saving subject dictionaries in %s.' % saveFile
