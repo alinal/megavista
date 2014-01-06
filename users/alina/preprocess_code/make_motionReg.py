@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     allRuns=['fix_nii', 'right_nii', 'left_nii']
     sessionName=['donepazil', 'placebo']
-    session=[1] # 0= donepazil, 1=placebo
+    session=[0] # 0= donepazil, 1=placebo
     TR = 2
 
     # The pass band is f_lb <-> f_ub.
