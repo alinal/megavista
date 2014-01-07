@@ -29,7 +29,7 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
 
     sessionName=['donepazil', 'placebo']
-    session=[1] # 0= donepazil, 1=placebo
+    session=[0] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
     #allRuns=['fix_nii']
@@ -79,6 +79,10 @@ if __name__ == "__main__":
 
                         # Get each time series (voxels x TRs)
                         ts_roi=t_all[roiNum].data
+                        # Linearly detrend within each voxel
+                        ts_roidt=signal.detrend(ts_roi, axis=0)
+                        # Band pass filter the data using boxcar filter
+                        ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
 
                         # Get the derivative
                         ts_roidv=np.diff(ts_roi)
@@ -88,11 +92,6 @@ if __name__ == "__main__":
                         ts_roidv_dt=signal.detrend(ts_roidv)
                         #Bandpass the derivative
                         ts_roidv_dtBox=bp_data(ts_roidv_dt, TR, f_ub, f_lb)
-
-                        # Linearly detrend within each voxel
-                        ts_roidt=signal.detrend(ts_roi, axis=0)
-                        # Band pass filter the data using boxcar filter
-                        ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
 
                         # Plot TS results
                         #plt.figure(); plt.plot(ts_roi); plt.plot(ts_roidt); plt.plot(ts_Box) ;

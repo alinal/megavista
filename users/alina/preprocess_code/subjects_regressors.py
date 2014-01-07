@@ -12,7 +12,7 @@
 
 
 # Leave out: 'r_IOG_p3' 'r_pSTS_p3', r_LOf_p3,  'R_MT_al_.5_0.25',
-# DCA: no MT, no lmFus for donepazil
+# DCA: no MT, no lmFus for donepazil 'l_mFus_p3_0.25',
 # CHT: no rIPS5
 # 'R_V1_0.25', 'R_V1_0.25',
 # WC: no 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4', 'rIPS5' is too small
@@ -29,9 +29,20 @@ rois=[ 'R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'R_LO1_0.25', 'R_LO
       'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25',
       'L_IPS3_0.25',  'L_IPS4_0.25', 'L_IPS5_0.25',
       'r_LOf_p3_0.25', 'r_pFus_p3_0.25',  'r_mFus_p3_0.25', 'r_pSTS_p3_0.25', 'r_PPA_p4_0.25',
-      'l_pFus_p3_0.25','l_pSTS_p3_0.25', 'l_mFus_p3_0.25','l_PPA_p4_0.25']
+      'l_pFus_p3_0.25','l_pSTS_p3_0.25', 'l_PPA_p4_0.25']
 
-subjects = {   'DCA':[['DCA042511',dict(loc_nii =['epi01_mcf.par',
+rois={'SS':[['SS012311',['R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V2D_0.25',  'R_V3D_0.25', 'R_V4_0.25', 'r_pFus_p3', 'r_mFus_p3', 'r_PPA_p4',
+             'R_V3A_0.25',  'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
+            'L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25',  'l_mFus_p3', 'l_pFus_p3_0.25', 'l_PPA_p4',
+            'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25',  'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25']],
+            ['SS011011',['R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V4_0.25', 'R_LO1_0.25', 'R_LO2_0.25',
+            'R_V2D_0.25',  'R_V3D_0.25', 'R_V3A_0.25', 'R_IPS0_0.25', 'R_IPS1_0.25', 'R_IPS2_0.25',
+            'R_IPS3_0.25',  'R_IPS4_0.25', 'R_IPS5_0.25','L_V1_0.25', 'L_V2V_0.25', 'L_V3V_0.25', 'L_V4_0.25', 'L_LO1_0.25', 'L_LO2_0.25',
+            'L_V2D_0.25',  'L_V3D_0.25', 'L_V3A_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25',  'L_IPS4_0.25', 'L_IPS5_0.25',
+            'r_LOf_p3_0.25', 'r_pFus_p3_0.25',  'r_mFus_p3_0.25', 'r_pSTS_p3_0.25', 'r_PPA_p4_0.25',
+            'l_pFus_p3_0.25','l_pSTS_p3_0.25', 'l_PPA_p4_0.25']]]}
+
+subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
                              fix_nii = ['epi04_mcf.par',
                                         'epi07_mcf.par',
@@ -42,17 +53,16 @@ subjects = {   'DCA':[['DCA042511',dict(loc_nii =['epi01_mcf.par',
                              right_nii = ['epi02_mcf.par',
                                           'epi05_mcf.par',
                                           'epi08_mcf.par'])],
-                ['DCA041111', dict(loc_nii =['epi01_mcf.par',
-                                             'epi11_mcf.par'],
-                                   fix_nii = ['epi04_mcf.par',
-                                              'epi07_mcf.par',
-                                              'epi10_mcf.par'],
-                                   left_nii = ['epi03_mcf.par',
-                                                'epi06_mcf.par',
-                                                'epi09_mcf.par'],
-                                   right_nii = ['epi02_mcf.par',
-                                                'epi05_mcf.par',
-                                                'epi08_mcf.par'])]]}
+           ['SS011011',dict(loc_nii = ['epi01_mcf.par',
+                                       'epi10_mcf.par'],
+                            fix_nii = ['epi04_mcf.par',
+                                       'epi07_mcf.par'],
+                            left_nii = ['epi03_mcf.par',
+                                        'epi06_mcf.par',
+                                        'epi09_mcf.par'],
+                            right_nii =  ['epi02_mcf.par',
+                                          'epi05_mcf.par',
+                                          'epi08_mcf.par'])]]}
 
 '''
            'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
