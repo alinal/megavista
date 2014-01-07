@@ -60,7 +60,7 @@ if __name__ == "__main__":
     saveROI=0;
 
     sessionName=['donepazil', 'placebo']
-    session=[0] # 0= donepazil, 1=placebo
+    session=[1] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
     #allRuns=['fix_nii']

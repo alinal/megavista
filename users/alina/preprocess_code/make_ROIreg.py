@@ -29,7 +29,7 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
 
     sessionName=['donepazil', 'placebo']
-    session=[0] # 0= donepazil, 1=placebo
+    session=[1] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
     #allRuns=['fix_nii']
@@ -95,8 +95,7 @@ if __name__ == "__main__":
                         ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
 
                         # Plot TS results
-                        #origTS=np.mean(ts_roi, 0)
-                        #plt.figure(); plt.plot(origTS); plt.plot(ts_roidtAvg); plt.plot(ts_AvgBox) ;
+                        #plt.figure(); plt.plot(ts_roi); plt.plot(ts_roidt); plt.plot(ts_Box) ;
                         #plt.legend(('Original TS', 'Linearly Filtered TS', 'Bandpass filtered'))
 
                         # Plot frequencies
@@ -104,16 +103,12 @@ if __name__ == "__main__":
                         S_original=SpectralAnalyzer(ts.TimeSeries(t_all[roiNum], sampling_interval=TR))
                         S_dt=SpectralAnalyzer(ts.TimeSeries(ts_roidt, sampling_interval=TR))
 
-                        fig03 = plt.figure()
-                        ax03 = fig03.add_subplot(1, 1, 1)
-
-                        ax03.plot(S_original.spectrum_multi_taper[0], S_original.spectrum_multi_taper[1], label='Original')
-
-                        ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
-
-                        ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
-
-                        ax03.legend()
+                        #fig03 = plt.figure()
+                        #ax03 = fig03.add_subplot(1, 1, 1)
+                        #ax03.plot(S_original.spectrum_multi_taper[0], S_original.spectrum_multi_taper[1], label='Original')
+                        #ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
+                        #ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
+                        #ax03.legend()
 
                         # Save nuisance time series
                         out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc_avgFt.1D'
