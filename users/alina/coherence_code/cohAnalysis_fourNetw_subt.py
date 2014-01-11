@@ -96,10 +96,10 @@ if __name__ == "__main__":
     base_path = '/Volumes/Plata1/DorsalVentral/' # Change this to your path
     fmri_path = base_path + 'fmri/'
     condition=['Fixation', 'Right', 'Left']
-    #fileNames=['CGplacebo_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck', 'CGplacebo_right_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck', 
+    #fileNames=['CGplacebo_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck', 'CGplacebo_right_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck',
     #'CGplacebo_left_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck']
-    #fileNames=['DCAplacebo_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck', 'DCAplacebo_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
-    #'DCAplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
+    #fileNames=['DCAplacebo_fix_nii_39ROIts_2_corrVals_wGM_hierarch_22reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_2_corrVals_wGM_hierarch_22reg_stc.pck',
+    #'DCAplacebo_left_nii_39ROIts_2_corrVals_wGM_hierarch_22reg_stc.pck']
     #fileNames=['CHTplacebo_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck', 'CHTplacebo_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
     #'CHTplacebo_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
     #fileNames=['SSdonepazil_fix_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck', 'SSdonepazil_right_nii_27ROIts_corrVals_wGM_hierarch_22reg.pck',
@@ -108,9 +108,12 @@ if __name__ == "__main__":
     #'WCplacebo_left_nii_31ROIts_corrVals_wGM_hierarch_22reg.pck']
     #fileNames=['CGdonepazil_fix_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck', 'CGdonepazil_right_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck',
     #'CGdonepazil_left_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck']
-    fileNames=['CHTdonepazil_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck','CHTdonepazil_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
-    'CHTdonepazil_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
-    allNetworkAvg=dict(); 
+    #fileNames=['CHTdonepazil_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck','CHTdonepazil_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
+    #'CHTdonepazil_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
+    fileNames=['DCAplacebo_fix_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
+    'DCAplacebo_left_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
+
+    allNetworkAvg=dict();
 
 for ii, fileName in enumerate(fileNames):
     loadFile=fmri_path+'Results/correlation/' +fileName
@@ -134,10 +137,10 @@ for ii, fileName in enumerate(fileNames):
         numRuns=cohAll[sub].shape[0]
 
         #  Do hierarchical clustering of all ROIs
-        hierarch_t=np.mean(hierarch[sub],0)
-        Z=linkage(hierarch_t, 'single')
-        plt.figure()
-        dendrogram(Z, color_threshold=0, labels=roiNames)
+        #hierarch_t=np.mean(hierarch[sub],0)
+        #Z=linkage(hierarch_t, 'single')
+        #plt.figure()
+        #dendrogram(Z, color_threshold=0, labels=roiNames)
 
         #Fisher transform the data (maybe fisher transform earlier)
         coherAll_t = np.arctanh(cohAll[sub][:])
@@ -163,10 +166,10 @@ for ii, fileName in enumerate(fileNames):
 
         if plotMat:
             # Plot graph of coherence and correlation values
-            fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0,  title='Average ' +condition+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
-            fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
-            fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0,  title='Average ' +condition+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
-            fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
+            fig1 = drawmatrix_channels(coherAvg_t, roiNames, size=coherAvg_t.shape, color_anchor=0,  title='Average ' +condition[ii]+  ' Coherence Results over ' +str(numRuns) + ' runs for ' + sub)
+            fig2=drawmatrix_channels(coherSTD, roiNames, size=coherSTD.shape, color_anchor=0, title='Average ' +condition[ii]+ ' Coherence STD over ' +str(numRuns) + ' runs for ' + sub)
+            fig3=drawmatrix_channels(corrAvg_t, roiNames, size=corrAvg_t.shape, color_anchor=0,  title='Average ' +condition[ii]+ ' Correlation Results over ' +str(numRuns) + ' runs for ' + sub)
+            fig4=drawmatrix_channels(corrSTD, roiNames, size=corrSTD.shape, color_anchor=0, title='Average ' +condition[ii]+ ' Correlation STD over ' +str(numRuns) + ' runs for ' + sub)
             plt.show()
 
         #Define the streams
@@ -245,7 +248,7 @@ for ii, fileName in enumerate(fileNames):
         ax.set_title(title)
         ax.set_xticks(ind+width*2)
         ax.set_xticklabels( labels )
-        ax.set_ylim( 0, 1.0 )
+        ax.set_ylim( -.5, 1 )
         ax.legend((rects1[0], rects2[0], rects3[0], rects4[0]),
             ('W/ rh Ventral',  'W/ lh Ventral', 'W/ rh Dorsal', 'W/ lh Dorsal'))
 
@@ -255,7 +258,7 @@ for ii, fileName in enumerate(fileNames):
 ##########
 # Make a connection graph
 cond1='Right'; cond2='Fixation'
-allIndx=np.concatenate([ventralRHIndx, dorsalRHIndx])
+allIndx=np.concatenate([ventralLHIndx, dorsalLHIndx])
 temp=allNetworkAvg[cond1][:, allIndx,:][:,:,allIndx]-allNetworkAvg[cond2][:, allIndx,:][:,:,allIndx]
 #rhROIs=networkAvg[:, allIndx,:][:,:,allIndx]
 rhROIs=temp
@@ -265,7 +268,7 @@ print roiNames[allIndx]
 do_tstat = False
 thresh = 0 #abs thresh for graph (either t or fisher-r, depending on do_tstat), 0 = no thresh
     #p(boncorr,18 tests,27subs,2tails)<0.05 - 0.0028, t=3.3
-    #p(uncorr,27 subs,2tails)<0.05 - t=2.06 
+    #p(uncorr,27 subs,2tails)<0.05 - t=2.06
 # Find mean and SEM
 cmat=stats.nanmean(rhROIs, axis=0)
 numVals= sum(np.isnan(cmat[0])==False)
@@ -311,11 +314,11 @@ for e,e_p in enumerate(e_pos):
         nx.draw_networkx_edges(G1,pos,edgelist=[e_p],width=evals_pos[e]*nweight,
                                        edge_color='r',alpha=aval)
 
-                    
+
 #draw negative edges
 evals_neg = np.array([d['weight'] for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh])
 e_neg = [(u,v) for (u,v,d) in G1.edges(data=True) if d['weight']<-1*thresh]
-        
+
 #nx.draw_networkx_edges(G1,pos,edgelist=e_neg,width=evals_neg*-1*nweight,alpha=1,edge_color='b')
 
 for e,e_n in enumerate(e_neg):
@@ -330,6 +333,6 @@ for e,e_n in enumerate(e_neg):
 nx.draw_networkx_labels(G1,pos,nod_labels,font_size=8,font_weight='bold')
 
 plt.show()
-plt.title(cond1+ ' - ' + cond2 + ', All RH ROIs for ' +sub)
+plt.title(cond1+ ' - ' + cond2 + ', All LH ROIs for ' +sub)
 
 #fig04 = drawgraph_channels(cohAll[sub], roiNames) #color_anchor=1

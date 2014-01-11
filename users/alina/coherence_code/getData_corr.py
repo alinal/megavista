@@ -40,9 +40,12 @@ if __name__ == "__main__":
     #subFiles=['CGdonepazil_fix_nii_43ROIts_22Reg.pck', 'CGdonepazil_left_nii_43ROIts_22Reg.pck', 'CGdonepazil_right_nii_43ROIts_22Reg.pck' ]
     #subFiles=['CHTdonepazil_fix_nii_38ROIts_22Reg.pck', 'CHTdonepazil_left_nii_38ROIts_22Reg.pck', 'CHTdonepazil_right_nii_38ROIts_22Reg.pck']
     #subFiles=['WCdonepazil_fix_nii_32ROIts_22Reg.pck', 'WCdonepazil_left_nii_32ROIts_22Reg.pck', 'WCdonepazil_right_nii_32ROIts_22Reg.pck']
-    subFiles=['DCAdonepazil_fix_nii_38ROIts_22Reg.pck', 'DCAdonepazil_left_nii_38ROIts_22Reg.pck', 'DCAdonepazil_right_nii_38ROIts_22Reg.pck']
+    #subFiles=['DCAdonepazil_fix_nii_38ROIts_22Reg.pck', 'DCAdonepazil_left_nii_38ROIts_22Reg.pck', 'DCAdonepazil_right_nii_38ROIts_22Reg.pck']
+    #subFiles=['DCAplacebo_fix_nii_39ROIts_22Reg_stc.pck', 'DCAplacebo_left_nii_39ROIts_22Reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_22Reg_stc.pck']
+    subFiles=['DCAplacebo_fix_nii_39ROIts_20Reg_meanROI_stc.pck', 'DCAplacebo_left_nii_39ROIts_20Reg_meanROI_stc.pck', 'DCAplacebo_right_nii_39ROIts_20Reg_meanROI_stc.pck']
     normalizeByMean=1
     plot=0
+    saveFile=1;
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -59,6 +62,9 @@ if __name__ == "__main__":
 
     for subject in range(len(subFiles)):
         loadFile=base_path+ 'fmri/Results/timeseries/'+subFiles[subject]
+        #saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-10]+'_corrVals_wGM_hierarch_22reg.pck'
+        saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-12]+'_corrVals_wMeanROI_21reg_stc.pck'
+
         date=str(datetime.date.today())
 
         # set up dictionaries to store results
@@ -151,21 +157,20 @@ if __name__ == "__main__":
                 plt.title('Run number '+str(runNum+1)+', '+filterType)
                 plt.show()
 
-        saveFile=base_path+'fmri/Results/correlation/'+subFiles[subject][:-10]+'_corrVals_wGM_hierarch_22reg.pck'
-
-        file=open(saveFile, 'w') # write mode
-        # First file loaded is coherence
-        pickle.dump(coh_all, file)
-        # Second file loaded is correlation
-        pickle.dump(corr_all, file)
-        # Save roi names
-        pickle.dump(roiNames, file)
-        # save subjects
-        pickle.dump(subFiles, file)
-        # Save hierarchical clustering distances
-        pickle.dump(hierarch, file)
-        file.close()
-        print 'Saving coherence and correlation dictionaries in %s.' % saveFile
+        if saveFile:
+            file=open(saveFile, 'w') # write mode
+            # First file loaded is coherence
+            pickle.dump(coh_all, file)
+            # Second file loaded is correlation
+            pickle.dump(corr_all, file)
+            # Save roi names
+            pickle.dump(roiNames, file)
+            # save subjects
+            pickle.dump(subFiles, file)
+            # Save hierarchical clustering distances
+            pickle.dump(hierarch, file)
+            file.close()
+            print 'Saving coherence and correlation dictionaries in %s.' % saveFile
 
 
 

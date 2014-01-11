@@ -32,7 +32,7 @@ if __name__ == "__main__":
     session=[1] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
-    #allRuns=['fix_nii']
+    allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -70,6 +70,7 @@ if __name__ == "__main__":
             filterType='boxcar'
 
             #Go through each run and save out ROIs as nifti file
+            # Band pass filtering and detrending are done on ROI average timeseries
             for runName in allRuns:
                 print 'Analyzing ' + runName
                 for this_fix in sessName[1][runName]:
@@ -82,12 +83,14 @@ if __name__ == "__main__":
                         ts_roi=[]; ts_roidt=[]; ts_Box=[];
                         ts_roidv=[]; ts_roidv_dt=[]; ts_roidv_dtBox=[];
 
-                        # Get each time series (voxels x TRs)
+                        # Get each time series (1 x TRs)
                         ts_roi=t_all[roiNum].data
-                        # Linearly detrend within each voxel
+                        # Linearly detrend each ROI
                         ts_roidt=signal.detrend(ts_roi, axis=0)
+
                         # Band pass filter the data using boxcar filter
                         ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
+                        1/0
 
                         # Get the derivative
                         ts_roidv=np.diff(ts_roi)
@@ -113,7 +116,7 @@ if __name__ == "__main__":
                         #ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
                         #ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
                         #ax03.legend()
-
+                        1/0
                         # Save nuisance time series
                         out_file=save_path+this_fix[:-8]+'_'+roi_names[roiNum]+'_stc_avgFt.1D'
                         np.savetxt(out_file, ts_Box)

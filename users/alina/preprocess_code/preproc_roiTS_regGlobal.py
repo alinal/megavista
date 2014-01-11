@@ -27,9 +27,9 @@ from preproc_filter import bp_data
 from scipy import signal
 import scipy.linalg
 
-import subjects
-reload(subjects) # In case you make changes in there while you analyze
-from subjects import subjects, rois, nuisReg
+import subjects_regGlobal
+reload(subjects_regGlobal) # In case you make changes in there while you analyze
+from subjects_regGlobal import subjects, rois, nuisReg
 
 def display_vox(tseries,vox_idx,fig=None):
     """
@@ -83,9 +83,9 @@ if __name__ == "__main__":
             sessName = subjects[subject][sess]
 
             # Get ROIs
-            roi_names=np.array(rois)
+            roi_names=np.array(rois[subject][sess][1])
             ROI_files=[]
-            for roi in rois:
+            for roi in rois[subject][sess][1]:
                 ROI_files.append(fmri_path+sessName[0]+'/Inplane/ROIs/' +roi +'.mat')
 
             # Get the coordinates of the ROIs, while accounting for the
@@ -101,10 +101,12 @@ if __name__ == "__main__":
 
             #Go through each run and save out ROIs as nifti file
             for runName in allRuns:
+                print 'Analyzing ' + runName
+
                 # Initialize lists for each condition:
                 t_fix = []
                 print runName
-                saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_%sReg_stc.pck' % (len(roi_names), len(nuisReg))
+                saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_%sReg_meanROI_stc.pck' % (len(roi_names), len(nuisReg))
                 for this_run in sessName[1][runName]:
                     run_rois=[]
                     allData=load_nii(nifti_path+this_run[:-7]+'_stc.nii.gz', ROI_coords, TR, normalize='percent', average=False, verbose=True)
@@ -113,13 +115,16 @@ if __name__ == "__main__":
                     # Load the nuisance variables into a matrix
                     for reg in nuisReg:
                         regFile=reg_path+this_run[:5]+'_'+reg
+                        print 'Regressor ' + reg
                         regMatrix.append(np.loadtxt(regFile))
                     # Convert to array
                     regArray=np.array(regMatrix).transpose()
 
                     # Go through each ROI
                     for jj in range(len(ROI_coords)):
-                        roiData=[]; ts_roidt=[]; ts_Box=[]; ts_AvgBox=[];
+                        print 'Analyzing '+ roi_names[jj]
+                        roiData=[]; ts_roidt=[]; ts_Box=[]; ts_AvgBox=[]; meanROIts=[];meanROIts=[];
+
                         # Get time series for each ROI
                         roiData=allData[jj]
 
@@ -155,12 +160,19 @@ if __name__ == "__main__":
                         tsArray=np.array(ts_Box.data)
                         residMatrix=[]
 
+                        # Load mean ROI timeseries
+                        #print 'Loading '+ roi_names[jj]
+                        meanROIts=np.loadtxt(reg_path+this_run[:5]+'_'+roi_names[jj]+'_stc_avgFT.1D')
+                        #meanROIts=np.mean(tsArray,0)
+                        # Insert mean ROIts at the beginning of the array
+                        gb_regArray=np.insert(regArray, 0, meanROIts,axis=1)
+
                         # Do multiple regression using least squares.
                         # Regress within each voxel
                         for vox in range(tsArray.shape[0]):
                             b_weight=[]
-                            b_weight=np.linalg.lstsq(regArray,tsArray[vox])[0]
-                            residMatrix.append(tsArray[vox]-np.dot(regArray,b_weight))
+                            b_weight=np.linalg.lstsq(gb_regArray,tsArray[vox])[0]
+                            residMatrix.append(tsArray[vox]-np.dot(gb_regArray,b_weight))
 
                         # Make residual array
                         residArray=np.array(residMatrix)
@@ -168,6 +180,9 @@ if __name__ == "__main__":
                         # Get ROI average
                         roiAvg=[]; roiAvg=np.mean(residArray, 0)
                         run_rois.append(ts.TimeSeries(roiAvg, sampling_interval=TR))
+
+                        # Plot results
+                        plt.figure(); plt.plot(meanROIts); plt.plot(roiAvg)
                     t_fix.append(run_rois)
 
                 if saveROI:
