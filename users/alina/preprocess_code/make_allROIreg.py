@@ -18,9 +18,9 @@ from nitime.viz import drawmatrix_channels, drawgraph_channels, plot_xcorr
 
 from scipy import signal
 
-import subjects_regressors
-reload(subjects_regressors) # In case you make changes in there while you analyze
-from subjects_regressors import subjects, rois
+import subjects_roi_regressors
+reload(subjects_roi_regressors) # In case you make changes in there while you analyze
+from subjects_roi_regressors import subjects, rois
 from preproc_filter import bp_data
 
 if __name__ == "__main__":
@@ -29,10 +29,10 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
 
     sessionName=['donepazil', 'placebo']
-    session=[0] # 0= donepazil, 1=placebo
+    session=[1] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
-    #allRuns=['fix_nii']
+    allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -47,12 +47,14 @@ if __name__ == "__main__":
     for subject in subjects:
         # Get session
         for sess in session:
+
             sessName = subjects[subject][sess]
+            print 'Analyzing ' + sessName[0]
 
             # Get ROIs
-            roi_names=np.array(rois)
+            roi_names=np.array(rois[subject][sess][1])
             ROI_files=[]
-            for roi in rois:
+            for roi in rois[subject][sess][1]:
                 ROI_files.append(fmri_path+sessName[0]+'/Inplane/ROIs/' +roi +'.mat')
 
             # Get the coordinates of the ROIs, while accounting for the
@@ -68,21 +70,27 @@ if __name__ == "__main__":
             filterType='boxcar'
 
             #Go through each run and save out ROIs as nifti file
+            # Band pass filtering and detrending are done on ROI average timeseries
             for runName in allRuns:
+                print 'Analyzing ' + runName
                 for this_fix in sessName[1][runName]:
                     t_all=[]
                     # Load the time series and average over ROI
                     t_all=load_nii(nifti_path+this_fix[:-4]+'_stc.nii.gz', ROI_coords,TR, normalize='percent', average=True, verbose=True)
-                    for roiNum in range(len(rois)):
+
+                    for roiNum in range(len(roi_names)):
+                        print 'Analyzing '+ roi_names[roiNum]
                         ts_roi=[]; ts_roidt=[]; ts_Box=[];
                         ts_roidv=[]; ts_roidv_dt=[]; ts_roidv_dtBox=[];
 
-                        # Get each time series (voxels x TRs)
+                        # Get each time series (1 x TRs)
                         ts_roi=t_all[roiNum].data
-                        # Linearly detrend within each voxel
+                        # Linearly detrend each ROI
                         ts_roidt=signal.detrend(ts_roi, axis=0)
+
                         # Band pass filter the data using boxcar filter
                         ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
+                        1/0
 
                         # Get the derivative
                         ts_roidv=np.diff(ts_roi)
@@ -108,11 +116,11 @@ if __name__ == "__main__":
                         #ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
                         #ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
                         #ax03.legend()
-
+                        1/0
                         # Save nuisance time series
-                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc_avgFt.1D'
+                        out_file=save_path+this_fix[:-8]+'_'+roi_names[roiNum]+'_stc_avgFt.1D'
                         np.savetxt(out_file, ts_Box)
-                        out_file=save_path+this_fix[:-8]+'_'+rois[roiNum]+'_stc_avgFt_deriv.1D'
+                        out_file=save_path+this_fix[:-8]+'_'+roi_names[roiNum]+'_stc_avgFt_deriv.1D'
                         np.savetxt(out_file, ts_roidv_dtBox)
 
 
