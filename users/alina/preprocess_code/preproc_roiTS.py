@@ -83,9 +83,10 @@ if __name__ == "__main__":
             sessName = subjects[subject][sess]
 
             # Get ROIs
-            roi_names=np.array(rois)
+            #roi_names=np.array(rois)
+            roi_names=np.array(rois[subject][sess][1])
             ROI_files=[]
-            for roi in rois:
+            for roi in rois[subject][sess][1]:
                 ROI_files.append(fmri_path+sessName[0]+'/Inplane/ROIs/' +roi +'.mat')
 
             # Get the coordinates of the ROIs, while accounting for the
@@ -101,14 +102,13 @@ if __name__ == "__main__":
 
             #Go through each run and save out ROIs as nifti file
             for runName in allRuns:
+                print 'Analyzing ' + runName
                 # Initialize lists for each condition:
                 t_fix = []
-                print runName
                 saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_%sReg_stc.pck' % (len(roi_names), len(nuisReg))
                 for this_run in sessName[1][runName]:
                     run_rois=[]
                     # Load stc nifti
-                    1/0
                     allData=load_nii(nifti_path+this_run[:-7]+'_stc.nii.gz', ROI_coords, TR, normalize='percent', average=False, verbose=True)
                     regMatrix=[]
 
@@ -116,11 +116,13 @@ if __name__ == "__main__":
                     for reg in nuisReg:
                         regFile=reg_path+this_run[:5]+'_'+reg
                         regMatrix.append(np.loadtxt(regFile))
+                        print 'Regressor ' + reg
                     # Convert to array
                     regArray=np.array(regMatrix).transpose()
 
                     # Go through each ROI
                     for jj in range(len(ROI_coords)):
+                        print 'Analyzing '+ roi_names[jj]
                         roiData=[]; ts_roidt=[]; ts_Box=[]; ts_AvgBox=[];
                         # Get time series for each ROI
                         roiData=allData[jj]

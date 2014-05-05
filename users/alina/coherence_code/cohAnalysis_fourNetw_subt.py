@@ -110,16 +110,28 @@ if __name__ == "__main__":
     #'CGdonepazil_left_nii_43ROIts_corrVals_wGM_hierarch_22reg.pck']
     #fileNames=['CHTdonepazil_fix_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck','CHTdonepazil_right_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck',
     #'CHTdonepazil_left_nii_38ROIts_corrVals_wGM_hierarch_22reg.pck']
+    # Files with/out ROI mean
     fileNames=['DCAplacebo_fix_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
     'DCAplacebo_left_nii_39ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
-    fileNames=['SSplacebo_fix_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'SSplacebo_left_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
-    'SSplacebo_right_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
-    fileNames=['CGplacebo_fix_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'CGplacebo_left_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
-    'CGplacebo_right_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
-    fileNames=['CHTplacebo_fix_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'CHTplacebo_left_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
-    'CHTplacebo_right_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
-    fileNames=['WCplacebo_fix_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'WCplacebo_left_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
-    'WCplacebo_right_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck' ]
+    #fileNames=['SSplacebo_fix_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'SSplacebo_right_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
+    #'SSplacebo_left_nii_27ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
+    #fileNames=['CGplacebo_fix_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'CGplacebo_right_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
+    #'CGplacebo_left_nii_43ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
+    #fileNames=['CHTplacebo_fix_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'CHTplacebo_right_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
+    #'CHTplacebo_left_nii_40ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck']
+    #fileNames=['WCplacebo_fix_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', 'WCplacebo_right_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck',
+    # 'WCplacebo_left_nii_31ROIts_20Reg_mea_corrVals_wMeanROI_21reg_stc.pck', ]
+    # Files with ROI mean
+    #fileNames=['DCAplacebo_fix_nii_39ROIts_2_corrVals_22reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_2_corrVals_22reg_stc.pck',
+    #'DCAplacebo_left_nii_39ROIts_2_corrVals_22reg_stc.pck']
+    #fileNames=['SSplacebo_fix_nii_27ROIts_2_corrVals_22reg_stc.pck', 'SSplacebo_left_nii_27ROIts_2_corrVals_22reg_stc.pck',
+    #'SSplacebo_right_nii_27ROIts_2_corrVals_22reg_stc.pck']
+    #fileNames=['CGplacebo_fix_nii_43ROIts_2_corrVals_22reg_stc.pck', 'CGplacebo_left_nii_43ROIts_2_corrVals_22reg_stc.pck',
+    #'CGplacebo_right_nii_43ROIts_2_corrVals_22reg_stc.pck']
+    #fileNames=['CHTplacebo_fix_nii_40ROIts_2_corrVals_22reg_stc.pck', 'CHTplacebo_left_nii_40ROIts_2_corrVals_22reg_stc.pck',
+    #'CHTplacebo_right_nii_40ROIts_2_corrVals_22reg_stc.pck']
+    #fileNames=['WCplacebo_fix_nii_31ROIts_2_corrVals_22reg_stc.pck', 'WCplacebo_left_nii_31ROIts_2_corrVals_22reg_stc.pck',
+    #'WCplacebo_right_nii_31ROIts_2_corrVals_22reg_stc.pck' ]
     allNetworkAvg=dict();
 
 for ii, fileName in enumerate(fileNames):
