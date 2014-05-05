@@ -55,6 +55,7 @@ if __name__ == "__main__":
             for runName in allRuns:
                 for this_fix in sessName[1][runName]:
                     txt_file=nifti_path+this_fix
+                    1/0
                     out_file_base=save_path+this_fix[:-4]
 
                     # read in par file

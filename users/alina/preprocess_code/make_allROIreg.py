@@ -32,7 +32,7 @@ if __name__ == "__main__":
     session=[1] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
-    allRuns=['fix_nii']
+    #allRuns=['fix_nii']
 
     # The pass band is f_lb <-> f_ub.
     # Also, see: http://imaging.mrc-cbu.cam.ac.uk/imaging/DesignEfficiency
@@ -47,7 +47,6 @@ if __name__ == "__main__":
     for subject in subjects:
         # Get session
         for sess in session:
-
             sessName = subjects[subject][sess]
             print 'Analyzing ' + sessName[0]
 

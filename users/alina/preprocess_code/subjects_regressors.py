@@ -95,6 +95,7 @@ rois={  'SS':[['SS012311',['R_V1_0.25', 'R_V2V_0.25', 'R_V3V_0.25', 'R_V2D_0.25'
             'l_IOG_p3_0.25', 'l_LOf_p3_0.25',  'l_mFus_p3_0.25', 'l_PPA_p4_0.25', 'l_pSTS_p3_0.25',
             'L_V3A_0.25', 'L_MT_al_.5_0.25', 'L_IPS0_0.25', 'L_IPS1_0.25', 'L_IPS2_0.25', 'L_IPS3_0.25', 'L_IPS4_0.25', 'L_IPS5_0.25']]]}
 
+# .par are motion correction parameters. 
 subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
                              fix_nii = ['epi04_mcf.par',
@@ -115,31 +116,7 @@ subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                         'epi09_mcf.par'],
                             right_nii =  ['epi02_mcf.par',
                                           'epi05_mcf.par',
-                                          'epi08_mcf.par'])]]}
-
-'''
-           'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
-                                       'epi11_mcf.par'],
-                             fix_nii = ['epi04_mcf.par',
-                                        'epi07_mcf.par',
-                                        'epi10_mcf.par'],
-                             left_nii =  ['epi03_mcf.par',
-                                          'epi06_mcf.par',
-                                          'epi09_mcf.par'],
-                             right_nii = ['epi02_mcf.par',
-                                          'epi05_mcf.par',
-                                          'epi08_mcf.par'])],
-           ['SS011011',dict(loc_nii = ['epi01_mcf.par',
-                                       'epi10_mcf.par'],
-                            fix_nii = ['epi04_mcf.par',
-                                       'epi07_mcf.par'],
-                            left_nii = ['epi03_mcf.par',
-                                        'epi06_mcf.par',
-                                        'epi09_mcf.par'],
-                            right_nii =  ['epi02_mcf.par',
-                                          'epi05_mcf.par',
-                                          'epi08_mcf.par'])]]}
-
+                                          'epi08_mcf.par'])]],
 
 'DCA':[['DCA042511',dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
@@ -162,7 +139,7 @@ subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                                 'epi09_mcf.par'],
                                    right_nii = ['epi02_mcf.par',
                                                 'epi05_mcf.par',
-                                                'epi08_mcf.par'])]]}
+                                                'epi08_mcf.par'])]],
 
 
   'WC':[['WC031911', dict(loc_nii =['epi01_mcf.par',
@@ -186,7 +163,7 @@ subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                           'epi10_mcf.par'],
                              right_nii = ['epi03_mcf.par',
                                           'epi06_mcf.par',
-                                          'epi09_mcf.par'])]]}
+                                          'epi09_mcf.par'])]],
 
 'CHT':[['CHT042111', dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
@@ -209,7 +186,7 @@ subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                           'epi09_mcf.par'],
                              fix_nii = ['epi02_mcf.par',
                                         'epi05_mcf.par',
-                                        'epi08_mcf.par'])]]}
+                                        'epi08_mcf.par'])]],
 
 'CG':[['CG011611', dict(loc_nii =['epi01_mcf.par',
                                       'epi10_mcf.par'],
@@ -233,9 +210,7 @@ subjects = {    'SS':[['SS012311', dict(loc_nii =['epi01_mcf.par',
                                          'epi05_mcf.par',
                                          'epi08_mcf.par'])]]}
 
-
-
-
+'''
     'WC':[['WC031911', dict(loc_nii =['epi01_mcf.par',
                                        'epi11_mcf.par'],
                              left_nii = ['epi02_mcf.par',
