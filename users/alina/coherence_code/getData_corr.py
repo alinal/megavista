@@ -42,7 +42,13 @@ if __name__ == "__main__":
     #subFiles=['WCdonepazil_fix_nii_32ROIts_22Reg.pck', 'WCdonepazil_left_nii_32ROIts_22Reg.pck', 'WCdonepazil_right_nii_32ROIts_22Reg.pck']
     #subFiles=['DCAdonepazil_fix_nii_38ROIts_22Reg.pck', 'DCAdonepazil_left_nii_38ROIts_22Reg.pck', 'DCAdonepazil_right_nii_38ROIts_22Reg.pck']
     #subFiles=['DCAplacebo_fix_nii_39ROIts_22Reg_stc.pck', 'DCAplacebo_left_nii_39ROIts_22Reg_stc.pck', 'DCAplacebo_right_nii_39ROIts_22Reg_stc.pck']
+    # New files based on STC niftis
+    subFiles=['SSplacebo_fix_nii_27ROIts_20Reg_meanROI_stc.pck', 'SSplacebo_left_nii_27ROIts_20Reg_meanROI_stc.pck', 'SSplacebo_right_nii_27ROIts_20Reg_meanROI_stc.pck']
+    subFiles=['CGplacebo_fix_nii_43ROIts_20Reg_meanROI_stc.pck', 'CGplacebo_left_nii_43ROIts_20Reg_meanROI_stc.pck', 'CGplacebo_right_nii_43ROIts_20Reg_meanROI_stc.pck']
+    subFiles=['CHTplacebo_fix_nii_40ROIts_20Reg_meanROI_stc.pck', 'CHTplacebo_left_nii_40ROIts_20Reg_meanROI_stc.pck', 'CHTplacebo_right_nii_40ROIts_20Reg_meanROI_stc.pck']
+    subFiles=['WCplacebo_fix_nii_31ROIts_20Reg_meanROI_stc.pck', 'WCplacebo_left_nii_31ROIts_20Reg_meanROI_stc.pck', 'WCplacebo_right_nii_31ROIts_20Reg_meanROI_stc.pck']
     subFiles=['DCAplacebo_fix_nii_39ROIts_20Reg_meanROI_stc.pck', 'DCAplacebo_left_nii_39ROIts_20Reg_meanROI_stc.pck', 'DCAplacebo_right_nii_39ROIts_20Reg_meanROI_stc.pck']
+
     normalizeByMean=1
     plot=0
     saveFile=1;

@@ -1,5 +1,5 @@
 Files in this folder:
-1. coherence_getData
+1. coherence_getData/ getData_corr.py
 - loads subject dictionary in subject.py
 - Band-pass filters
 - Get's ROI coordinates
