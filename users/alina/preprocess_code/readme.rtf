@@ -7,10 +7,14 @@
 
 \f0\fs26 \cf2 \
 Workflow code:\
-1. make_motionReg.py\
-2. make_ROIreg.py\
-3. al_sliceTime_correction.sh\
-4. preproc_roiTS.py\
-5. getData_corr.py\
-6. cohAnalysis\
+0. al_sliceTime_correction.sh\
+1. make_motionReg.py \
+	- makes motion regressors based on the _mcf.par files in the nifti directory. \
+2. make_allROIreg.py\
+	- Get each ROI and its derivative, bandpass and detrend it\
+3. preproc_roiTS.py OR preproc_roiTS_regGlobal.py\
+	- This code takes all of the motion, ROI, ventricles, white matter regressors and makes\
+	new ROI time series with all of this regressed out. \
+4. getData_corr.py\
+5. cohAnalysis\
 }

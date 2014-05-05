@@ -29,7 +29,7 @@ if __name__ == "__main__":
     fmri_path = base_path + 'fmri/'
 
     sessionName=['donepazil', 'placebo']
-    session=[1] # 0= donepazil, 1=placebo
+    session=[0] # 0= donepazil, 1=placebo
     TR = 2
     allRuns=['right_nii', 'left_nii', 'fix_nii']
     #allRuns=['fix_nii']
@@ -64,7 +64,7 @@ if __name__ == "__main__":
             # Initialize lists for each behavioral condition:
             nifti_path = fmri_path +sessName[0] + '/%s_nifti/' % sessName[0]
             save_path=fmri_path+sessName[0]+ '/regressors/'
-
+            
             # Add filtering
             filterType='boxcar'
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
                     t_all=[]
                     # Load the time series and average over ROI
                     t_all=load_nii(nifti_path+this_fix[:-4]+'_stc.nii.gz', ROI_coords,TR, normalize='percent', average=True, verbose=True)
-
+                    
                     for roiNum in range(len(roi_names)):
                         print 'Analyzing '+ roi_names[roiNum]
                         ts_roi=[]; ts_roidt=[]; ts_Box=[];
@@ -89,8 +89,7 @@ if __name__ == "__main__":
 
                         # Band pass filter the data using boxcar filter
                         ts_Box=bp_data(ts_roidt, TR, f_ub, f_lb)
-                        1/0
-
+                   
                         # Get the derivative
                         ts_roidv=np.diff(ts_roi)
                         # Make it the same size as the original
@@ -115,7 +114,7 @@ if __name__ == "__main__":
                         #ax03.plot(S_dt.spectrum_multi_taper[0], S_dt.spectrum_multi_taper[1], label='Detrended')
                         #ax03.plot(S_boxcar.spectrum_multi_taper[0], S_boxcar.spectrum_multi_taper[1], label='Boxcar')
                         #ax03.legend()
-                        1/0
+                        
                         # Save nuisance time series
                         out_file=save_path+this_fix[:-8]+'_'+roi_names[roiNum]+'_stc_avgFt.1D'
                         np.savetxt(out_file, ts_Box)

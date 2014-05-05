@@ -107,6 +107,8 @@ if __name__ == "__main__":
                 saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_%sReg_stc.pck' % (len(roi_names), len(nuisReg))
                 for this_run in sessName[1][runName]:
                     run_rois=[]
+                    # Load stc nifti
+                    1/0
                     allData=load_nii(nifti_path+this_run[:-7]+'_stc.nii.gz', ROI_coords, TR, normalize='percent', average=False, verbose=True)
                     regMatrix=[]
 

@@ -92,7 +92,6 @@ if __name__ == "__main__":
             # up-sampling:
             ROI_coords = [tsv.upsample_coords(tsv.getROIcoords(f),up_samp) for f in ROI_files]
 
-
             nifti_path = fmri_path +sessName[0] + '/%s_nifti/' % sessName[0]
             reg_path=fmri_path+sessName[0]+'/regressors/'
 
@@ -109,6 +108,7 @@ if __name__ == "__main__":
                 saveFile=base_path+ 'fmri/Results/timeseries/'+subject+sessionName[sess]+'_'+runName+'_%sROIts_%sReg_meanROI_stc.pck' % (len(roi_names), len(nuisReg))
                 for this_run in sessName[1][runName]:
                     run_rois=[]
+                    # Load STC nifti
                     allData=load_nii(nifti_path+this_run[:-7]+'_stc.nii.gz', ROI_coords, TR, normalize='percent', average=False, verbose=True)
                     regMatrix=[]
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
                         # Get time series for each ROI
                         roiData=allData[jj]
-
+                       
                         # Linearly detrend within each voxel
                         ts_roidt=signal.detrend(roiData.data, axis=1)
 
@@ -161,7 +161,8 @@ if __name__ == "__main__":
                         residMatrix=[]
 
                         # Load mean ROI timeseries
-                        #print 'Loading '+ roi_names[jj]
+                        print 'Loading '+ roi_names[jj]
+                        # This meanROIts should be the same as ts_AvgBox
                         meanROIts=np.loadtxt(reg_path+this_run[:5]+'_'+roi_names[jj]+'_stc_avgFT.1D')
                         #meanROIts=np.mean(tsArray,0)
                         # Insert mean ROIts at the beginning of the array
